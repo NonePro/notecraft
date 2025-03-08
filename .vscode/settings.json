@@ -6,7 +6,7 @@
 		"media/webview.js.map": true,
 		"out": true,
 		"dist": true,
-		"media/vendor": true,
+		"media/vendor": true
 	},
 	"eslint.workingDirectories": [
 		"./",
@@ -15,18 +15,18 @@
 	"editor.formatOnSave": false,
 	"contributions.settings.moveOutPrefix": true,
 	"contributions.commands.excludeById": [
-		"todomd.dev.setLastVisit",
-		"todomd.dev.clearGlobalState",
-		"todomd.dev.showGlobalState",
-		"todomd.dev.removeAllOverdue",
-		"todomd.addTaskToActiveFileWebview",
-		"todomd.mainStatusBarCommand"
+		"notecraft.dev.setLastVisit",
+		"notecraft.dev.clearGlobalState",
+		"notecraft.dev.showGlobalState",
+		"notecraft.dev.removeAllOverdue",
+		"notecraft.addTaskToActiveFileWebview",
+		"notecraft.mainStatusBarCommand"
 	],
 	"contributions.settings.replaceDefaultValue": {
-		"todomd.webview.fontFamily": "\"...\"",
-		"todomd.mainStatusBarItem": "{...}",
-		"todomd.progressStatusBarItem": "{...}",
-		"todomd.decorations": "{...}",
+		"notecraft.webview.fontFamily": "\"...\"",
+		"notecraft.mainStatusBarItem": "{...}",
+		"notecraft.progressStatusBarItem": "{...}",
+		"notecraft.decorations": "{...}"
 	},
 	"cSpell.words": [
 		"Doesnt",

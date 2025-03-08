@@ -88,57 +88,57 @@ export function updateEditorDecorationStyle() {
 	});
 	favoriteTaskDecorationType = window.createTextEditorDecorationType({
 		isWholeLine: true,
-		backgroundColor: new ThemeColor('todomd.favoriteTaskBackground'),
+		backgroundColor: new ThemeColor('notecraft.favoriteTaskBackground'),
 		...$config.decorations.favorite,
 	});
 	commentDecorationType = window.createTextEditorDecorationType({
-		color: new ThemeColor('todomd.commentForeground'),
+		color: new ThemeColor('notecraft.commentForeground'),
 		isWholeLine: true,
 		fontWeight: 'normal',
 		...$config.decorations.comment,
 	});
 	priorityADecorationType = window.createTextEditorDecorationType({
-		color: new ThemeColor('todomd.priorityAForeground'),
+		color: new ThemeColor('notecraft.priorityAForeground'),
 		fontWeight: 'bold',
 		...$config.decorations.priorityA,
 	});
 	priorityBDecorationType = window.createTextEditorDecorationType({
-		color: new ThemeColor('todomd.priorityBForeground'),
+		color: new ThemeColor('notecraft.priorityBForeground'),
 		fontWeight: 'bold',
 		...$config.decorations.priorityB,
 	});
 	priorityCDecorationType = window.createTextEditorDecorationType({
-		color: new ThemeColor('todomd.priorityCForeground'),
+		color: new ThemeColor('notecraft.priorityCForeground'),
 		fontWeight: 'bold',
 		...$config.decorations.priorityC,
 	});
 	priorityDDecorationType = window.createTextEditorDecorationType({
-		color: new ThemeColor('todomd.priorityDForeground'),
+		color: new ThemeColor('notecraft.priorityDForeground'),
 		fontWeight: 'bold',
 		...$config.decorations.priorityD,
 	});
 	priorityEDecorationType = window.createTextEditorDecorationType({
-		color: new ThemeColor('todomd.priorityEForeground'),
+		color: new ThemeColor('notecraft.priorityEForeground'),
 		fontWeight: 'bold',
 		...$config.decorations.priorityE,
 	});
 	priorityFDecorationType = window.createTextEditorDecorationType({
-		color: new ThemeColor('todomd.priorityFForeground'),
+		color: new ThemeColor('notecraft.priorityFForeground'),
 		fontWeight: 'bold',
 		...$config.decorations.priorityF,
 	});
 	projectDecorationType = window.createTextEditorDecorationType({
-		color: new ThemeColor('todomd.projectForeground'),
+		color: new ThemeColor('notecraft.projectForeground'),
 		...getBadgeDecorationStyle(),
 		...$config.decorations.project,
 	});
 	tagsDecorationType = window.createTextEditorDecorationType({
-		color: new ThemeColor('todomd.tagForeground'),
+		color: new ThemeColor('notecraft.tagForeground'),
 		...getBadgeDecorationStyle(),
 		...$config.decorations.tag,
 	});
 	contextDecorationType = window.createTextEditorDecorationType({
-		color: new ThemeColor('todomd.contextForeground'),
+		color: new ThemeColor('notecraft.contextForeground'),
 		...getBadgeDecorationStyle(),
 		...$config.decorations.context,
 	});

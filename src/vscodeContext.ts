@@ -6,13 +6,13 @@ import { $config } from './extension';
  * This extensions' context names.
  */
 export const enum VscodeContext {
-	IsActive = 'todomd:isActive',
-	IsDev = 'todomd:isDev',
-	FilterActive = 'todomd:filterActive',
-	Generic1FilterExists = 'todomd:generic1FilterExists',
-	Generic2FilterExists = 'todomd:generic2FilterExists',
-	Generic3FilterExists = 'todomd:generic3FilterExists',
-	ArchivedFileNotSpecified = 'todomd:archivedFileNotSpecified',
+	IsActive = 'notecraft:isActive',
+	IsDev = 'notecraft:isDev',
+	FilterActive = 'notecraft:filterActive',
+	Generic1FilterExists = 'notecraft:generic1FilterExists',
+	Generic2FilterExists = 'notecraft:generic2FilterExists',
+	Generic3FilterExists = 'notecraft:generic3FilterExists',
+	ArchivedFileNotSpecified = 'notecraft:archivedFileNotSpecified',
 }
 
 /**

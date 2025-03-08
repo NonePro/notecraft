@@ -1,23 +1,23 @@
 
 export const enum Constants {
-	ExtensionSettingsPrefix = 'todomd',
+	ExtensionSettingsPrefix = 'notecraft',
 	LastVisitByFileStorageKey = 'LAST_VISIT_BY_FILE_STORAGE_KEY',
 
-	TagsTreeViewId = 'todomd.tags',
-	ProjectsTreeViewId = 'todomd.projects',
-	ContextsTreeViewId = 'todomd.contexts',
-	DueTreeViewId = 'todomd.due',
-	TasksTreeViewId = 'todomd.tasks',
-	ArchivedTreeViewId = 'todomd.archived',
-	Generic1TreeViewId = 'todomd.generic1',
-	Generic2TreeViewId = 'todomd.generic2',
-	Generic3TreeViewId = 'todomd.generic3',
+	TagsTreeViewId = 'notecraft.tags',
+	ProjectsTreeViewId = 'notecraft.projects',
+	ContextsTreeViewId = 'notecraft.contexts',
+	DueTreeViewId = 'notecraft.due',
+	TasksTreeViewId = 'notecraft.tasks',
+	ArchivedTreeViewId = 'notecraft.archived',
+	Generic1TreeViewId = 'notecraft.generic1',
+	Generic2TreeViewId = 'notecraft.generic2',
+	Generic3TreeViewId = 'notecraft.generic3',
 
-	FocusWebviewViewCommandId = 'todomd.webviewTasks.focus',
+	FocusWebviewViewCommandId = 'notecraft.webviewTasks.focus',
 
-	DefaultFileSetting = 'todomd.defaultFile',
-	DefaultArchiveFileSetting = 'todomd.defaultArchiveFile',
-	DefaultSomedayFileSetting = 'todomd.defaultSomedayFile',
+	DefaultFileSetting = 'notecraft.defaultFile',
+	DefaultArchiveFileSetting = 'notecraft.defaultArchiveFile',
+	DefaultSomedayFileSetting = 'notecraft.defaultSomedayFile',
 
 	WorkspaceFolderVariable = '${workspaceFolder}',
 

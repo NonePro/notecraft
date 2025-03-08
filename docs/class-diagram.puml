@@ -140,14 +140,19 @@ package "UI Components" {
   }
 
   interface StatusBarItem {
-    text: string
-    tooltip: string
-    color: ThemeColor
-    backgroundColor: ThemeColor
-    command: string
-    show(): void
-    hide(): void
-    dispose(): void
+    +id: string
+    +alignment: StatusBarAlignment
+    +priority: number
+    +name: string
+    +text: string
+    +tooltip: string
+    +color: ThemeColor
+    +backgroundColor: ThemeColor
+    +command: string
+    +accessibilityInformation: AccessibilityInformation
+    +show(): void
+    +hide(): void
+    +dispose(): void
   }
 }
 

@@ -1,0 +1,133 @@
+@startuml Task Decoration Structure
+
+skinparam {
+  BackgroundColor white
+  ArrowColor #333
+  BorderColor #333
+  FontName "Arial"
+  FontSize 12
+}
+
+' Main Task Class
+class "TheTask" as Task {
+  + title: string
+  + done: boolean
+  + rawText: string
+  + lineNumber: number
+  + indentLvl: number
+  + priority: Priority
+  + tags: string[]
+  + projects: string[]
+  + contexts: string[]
+  + due?: DueDate
+  + favorite: boolean
+  + subtasks: TheTask[]
+  + isCollapsed?: boolean
+  + overdue?: string
+  ...
+}
+
+' Decoration Types
+package "Text Editor Decorations" {
+  class "Completed Task" as CompletedTask {
+    + isWholeLine: true
+    + textDecoration: line-through
+  }
+  
+  class "Favorite Task" as FavoriteTask {
+    + isWholeLine: true
+    + backgroundColor: ThemeColor
+  }
+  
+  class "Priority" as Priority {
+    + color: ThemeColor
+    + fontWeight: bold
+  }
+  
+  class "Tag" as Tag {
+    + color: ThemeColor
+    + badge style
+  }
+  
+  class "Project" as Project {
+    + color: ThemeColor
+    + badge style
+  }
+  
+  class "Context" as Context {
+    + color: ThemeColor
+    + badge style
+  }
+  
+  class "Due Date" as DueDate {
+    + color: ThemeColor
+  }
+  
+  class "Overdue" as Overdue {
+    + color: ThemeColor
+    + after: days indicator
+  }
+  
+  class "Nested Tasks" as NestedTasks {
+    + after: count or pie chart
+  }
+  
+  class "Special Tags" as SpecialTags {
+    + color: ThemeColor
+  }
+}
+
+' Visual Representation
+package "Visual Elements" {
+  class "Task in Editor" as TaskVisual {
+    - Checkbox (done status)
+    - Title text
+    - Priority indicator
+    - Tags with badges
+    - Projects with badges
+    - Contexts with badges
+    - Due date indicator
+    - Nested tasks indicator
+    - Special formatting
+  }
+}
+
+' Relationships
+Task --> CompletedTask : if done
+Task --> FavoriteTask : if favorite
+Task --> Priority : based on priority value
+Task --> Tag : for each tag
+Task --> Project : for each project
+Task --> Context : for each context
+Task --> DueDate : if has due date
+Task --> Overdue : if overdue
+Task --> NestedTasks : if has subtasks
+Task --> SpecialTags : for special tags
+
+CompletedTask --> TaskVisual : strikethrough
+FavoriteTask --> TaskVisual : background color
+Priority --> TaskVisual : colored priority
+Tag --> TaskVisual : colored tag badges
+Project --> TaskVisual : colored project badges
+Context --> TaskVisual : colored context badges
+DueDate --> TaskVisual : due date indicator
+Overdue --> TaskVisual : overdue indicator
+NestedTasks --> TaskVisual : count/progress
+SpecialTags --> TaskVisual : special formatting
+
+note bottom of TaskVisual
+  Example Task:
+  - [ ] (A) Complete project documentation +Documentation #important @work {due:2023-05-15}
+  
+  Visual Elements:
+  - Priority (A): bold, colored
+  - Project +Documentation: badge style
+  - Tag #important: badge style
+  - Context @work: badge style
+  - Due date: colored based on status
+  - If completed: strikethrough
+  - If favorite: highlighted background
+  - If has subtasks: count/pie indicator
+end note
+
+@enduml

@@ -97,18 +97,37 @@ export abstract class $state {
 export let $config: ExtensionConfig;
 
 export async function activate(context: ExtensionContext) {
+	process.on('unhandledRejection', (error) => {
+		// Log the error but prevent it from crashing the extension
+		console.error('Unhandled promise rejection:', error);
+	});
+
 	assignConfig();
 
 	$state.extensionContext = context;
-	const lastVisitByFile = context.globalState.get<typeof $state['lastVisitByFile'] | undefined>(Constants.LastVisitByFileStorageKey);
-	$state.lastVisitByFile = lastVisitByFile ? lastVisitByFile : {};
+
+	try {
+		const lastVisitByFile = context.globalState.get<typeof $state['lastVisitByFile'] | undefined>(Constants.LastVisitByFileStorageKey);
+		$state.lastVisitByFile = lastVisitByFile ? lastVisitByFile : {};
+	} catch (error) {
+		console.error('Error loading global state data:', error);
+		// Initialize with empty object if there's an error loading the global state
+		$state.lastVisitByFile = {};
+	}
 
 	$state.mainStatusBar = new MainStatusBar();
 	$state.progressStatusBar = new ProgressStatusBar();
 	$state.editorLineHeight = getEditorLineHeight();
 	updateEditorDecorationStyle();
 	updateUserSuggestItems();
-	registerAllCommands();
+
+	try {
+		registerAllCommands();
+	} catch (error) {
+		console.error('Error during command registration:', error);
+		// Continue with extension activation even if command registration fails
+		// This prevents the ECONNRESET error from stopping the extension activation
+	}
 	createAllTreeViews();
 	createWebviewView(context);
 	restoreGlobalState();
@@ -214,37 +233,43 @@ function assignConfig(): void {
 	$state.defaultFileReplacedValue = '';
 	$state.defaultArchiveFileReplacedValue = '';
 
-	if ($config.defaultFile.includes(Constants.WorkspaceFolderVariable)) {
-		$state.defaultFilePerWorkspace = true;
+	try {
+		if ($config.defaultFile && typeof $config.defaultFile === 'string' && $config.defaultFile.includes(Constants.WorkspaceFolderVariable)) {
+			$state.defaultFilePerWorkspace = true;
 
-		const workspaceFolder = workspace.workspaceFolders?.[0];
-		if (!workspaceFolder) {
-			$config.defaultFile = '';
-		} else {
-			$config.defaultFile = path.normalize($config.defaultFile.replace(Constants.WorkspaceFolderVariable, workspaceFolder.uri.fsPath));
-			$state.defaultFileReplacedValue = $config.defaultFile;
-
-			if (!fs.existsSync($config.defaultFile)) {
-				$state.defaultFileDoesntExist = true;
-				console.warn(`${$config.defaultFile} "todomd.defaultFile" doesn't exist.`);
+			const workspaceFolder = workspace.workspaceFolders?.[0];
+			if (!workspaceFolder) {
 				$config.defaultFile = '';
+			} else {
+				$config.defaultFile = path.normalize($config.defaultFile.replace(Constants.WorkspaceFolderVariable, workspaceFolder.uri.fsPath));
+				$state.defaultFileReplacedValue = $config.defaultFile;
+
+				if (!fs.existsSync($config.defaultFile)) {
+					$state.defaultFileDoesntExist = true;
+					console.warn(`${$config.defaultFile} "todomd.defaultFile" doesn't exist.`);
+					$config.defaultFile = '';
+				}
 			}
 		}
+	} catch (error) {
+		console.error('Error while processing workspace folder variable:', error);
+		$config.defaultFile = '';
+		$state.defaultFileDoesntExist = true;
 	}
 
-	if ($config.defaultArchiveFile.includes(Constants.WorkspaceFolderVariable)) {
-		const workspaceFolder = workspace.workspaceFolders?.[0];
-		if (!workspaceFolder) {
-			$config.defaultArchiveFile = '';
-		} else {
-			$config.defaultArchiveFile = path.normalize($config.defaultArchiveFile.replace(Constants.WorkspaceFolderVariable, workspaceFolder.uri.fsPath));
-			$state.defaultArchiveFileReplacedValue = $config.defaultArchiveFile;
-
-			if (!fs.existsSync($config.defaultArchiveFile)) {
-				console.warn(`${$config.defaultArchiveFile} "todomd.defaultArchiveFile" doesn't exist.`);
+	try {
+		if ($config.defaultArchiveFile && typeof $config.defaultArchiveFile === 'string' && $config.defaultArchiveFile.includes(Constants.WorkspaceFolderVariable)) {
+			const workspaceFolder = workspace.workspaceFolders?.[0];
+			if (!workspaceFolder) {
 				$config.defaultArchiveFile = '';
+			} else {
+				$config.defaultArchiveFile = path.normalize($config.defaultArchiveFile.replace(Constants.WorkspaceFolderVariable, workspaceFolder.uri.fsPath));
+				$state.defaultArchiveFileReplacedValue = $config.defaultArchiveFile;
 			}
 		}
+	} catch (error) {
+		console.error('Error while processing archive file workspace folder variable:', error);
+		$config.defaultArchiveFile = '';
 	}
 }
 

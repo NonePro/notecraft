@@ -17,7 +17,7 @@ import { getNonce } from './webviewUtils';
 let tasksWebviewViewProvider: TasksWebviewViewProvider;
 
 export class TasksWebviewViewProvider implements WebviewViewProvider {
-	public static readonly viewType = 'todomd.webviewTasks';
+	public static readonly viewType = 'notecraft.webviewTasks';
 
 	private _view?: WebviewView;
 
@@ -197,7 +197,7 @@ export class TasksWebviewViewProvider implements WebviewViewProvider {
 	 */
 	updateTitle(numberOfTasks: number, numberOfCompletedTasks: number) {
 		if (this._view) {
-			this._view.title = `webview ${showCompletedPercentage(numberOfTasks, numberOfCompletedTasks)}`;
+			this._view.title = `notecraft ${showCompletedPercentage(numberOfTasks, numberOfCompletedTasks)}`;
 		}
 	}
 	/**
