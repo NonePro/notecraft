@@ -27,5 +27,9 @@
 		"todomd.mainStatusBarItem": "{...}",
 		"todomd.progressStatusBarItem": "{...}",
 		"todomd.decorations": "{...}",
-	}
+	},
+	"cSpell.words": [
+		"notecraft",
+		"zettelkasten"
+	]
 }
