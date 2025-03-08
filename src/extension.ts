@@ -97,69 +97,110 @@ export abstract class $state {
 export let $config: ExtensionConfig;
 
 export async function activate(context: ExtensionContext) {
-	process.on('unhandledRejection', (error) => {
+	process.on('unhandledRejection', error => {
 		// Log the error but prevent it from crashing the extension
 		console.error('Unhandled promise rejection:', error);
 	});
 
-	assignConfig();
-
-	$state.extensionContext = context;
-
 	try {
-		const lastVisitByFile = context.globalState.get<typeof $state['lastVisitByFile'] | undefined>(Constants.LastVisitByFileStorageKey);
-		$state.lastVisitByFile = lastVisitByFile ? lastVisitByFile : {};
-	} catch (error) {
-		console.error('Error loading global state data:', error);
-		// Initialize with empty object if there's an error loading the global state
-		$state.lastVisitByFile = {};
-	}
+		assignConfig();
+		$state.extensionContext = context;
 
-	$state.mainStatusBar = new MainStatusBar();
-	$state.progressStatusBar = new ProgressStatusBar();
-	$state.editorLineHeight = getEditorLineHeight();
-	updateEditorDecorationStyle();
-	updateUserSuggestItems();
-
-	try {
-		registerAllCommands();
-	} catch (error) {
-		console.error('Error during command registration:', error);
-		// Continue with extension activation even if command registration fails
-		// This prevents the ECONNRESET error from stopping the extension activation
-	}
-	createAllTreeViews();
-	createWebviewView(context);
-	restoreGlobalState();
-
-	const defaultFileDocument = await getDocumentForDefaultFile();
-	if (defaultFileDocument) {
-		const filePath = defaultFileDocument.uri.toString();
-		const needReset = checkIfNeedResetRecurringTasks(filePath);
-		if (needReset) {
-			await resetAllRecurringTasks(defaultFileDocument, needReset.lastVisit);
-			await updateLastVisitGlobalState(filePath, new Date());
+		try {
+			const lastVisitByFile = context.globalState.get<typeof $state['lastVisitByFile'] | undefined>(Constants.LastVisitByFileStorageKey);
+			$state.lastVisitByFile = lastVisitByFile ? lastVisitByFile : {};
+		} catch (error) {
+			console.error('Error loading global state data:', error);
+			// Initialize with empty object if there's an error loading the global state
+			$state.lastVisitByFile = {};
 		}
-	}
 
-	onChangeActiveTextEditor(window.activeTextEditor);// Trigger on change event at activation
-
-	updateAllTreeViews();
-	updateArchivedTasks();
-	updateIsDevContext();
-	updateArchivedFilePathNotSetContext();
-
-	updateLanguageFeatures();
-	updateOnDidChangeActiveEditor();
-
-	function onConfigChange(e: ConfigurationChangeEvent) {
-		if (!e.affectsConfiguration(Constants.ExtensionSettingsPrefix)) {
-			return;
+		try {
+			$state.mainStatusBar = new MainStatusBar();
+			$state.progressStatusBar = new ProgressStatusBar();
+			$state.editorLineHeight = getEditorLineHeight();
+			updateEditorDecorationStyle();
+			updateUserSuggestItems();
+		} catch (error) {
+			console.error('Error initializing UI components:', error);
 		}
-		updateConfig();
-	}
 
-	context.subscriptions.push(workspace.onDidChangeConfiguration(onConfigChange));
+		try {
+			registerAllCommands();
+		} catch (error) {
+			console.error('Error during command registration:', error);
+			// Continue with extension activation even if command registration fails
+			// This prevents the ECONNRESET error from stopping the extension activation
+		}
+
+		try {
+			createAllTreeViews();
+			createWebviewView(context);
+			restoreGlobalState();
+		} catch (error) {
+			console.error('Error creating views or restoring state:', error);
+		}
+
+		try {
+			const defaultFileDocument = await getDocumentForDefaultFile();
+			if (defaultFileDocument) {
+				const filePath = defaultFileDocument.uri.toString();
+				const needReset = checkIfNeedResetRecurringTasks(filePath);
+				if (needReset) {
+					try {
+						await resetAllRecurringTasks(defaultFileDocument, needReset.lastVisit);
+						await updateLastVisitGlobalState(filePath, new Date());
+					} catch (resetError) {
+						console.error(`Error resetting recurring tasks for ${filePath}:`, resetError);
+					}
+				}
+			}
+		} catch (error) {
+			console.error('Error processing default file:', error);
+		}
+
+		try {
+			onChangeActiveTextEditor(window.activeTextEditor); // Trigger on change event at activation
+		} catch (error) {
+			console.error('Error handling active text editor change:', error);
+		}
+
+		try {
+			updateAllTreeViews();
+			updateArchivedTasks();
+			updateIsDevContext();
+			updateArchivedFilePathNotSetContext();
+		} catch (error) {
+			console.error('Error updating views and contexts:', error);
+		}
+
+		try {
+			updateLanguageFeatures();
+			updateOnDidChangeActiveEditor();
+		} catch (error) {
+			console.error('Error setting up language features and editor change handling:', error);
+		}
+
+		context.subscriptions.push(workspace.onDidChangeConfiguration((e: ConfigurationChangeEvent) => {
+		    if (!e.affectsConfiguration(Constants.ExtensionSettingsPrefix)) {
+		        return;
+		    }
+		    try {
+		        updateConfig();
+		    } catch (error) {
+		        console.error('Error updating configuration:', error);
+		    }
+		}));
+
+		context.subscriptions.push(workspace.onDidChangeConfiguration((e: ConfigurationChangeEvent) => {
+		    if (e.affectsConfiguration(Constants.ExtensionSettingsPrefix)) {
+		        updateConfig();
+		    }
+		}));
+	} catch (error) {
+		console.error('Critical error during extension activation:', error);
+		window.showErrorMessage(`NoteCraft extension failed to activate properly: ${error instanceof Error ? error.message : 'Unknown error'}`);
+	}
 }
 export function updateConfig() {
 	assignConfig();
