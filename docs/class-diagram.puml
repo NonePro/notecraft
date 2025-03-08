@@ -1,6 +1,23 @@
-@startuml
+@startuml "NoteCraft Extension Core Components"
 
 package "State Management" {
+  class ExtensionContext {
+    ' Core extension properties
+    +subscriptions: Disposable[]
+    +extensionPath: string
+    +storagePath: string
+    +globalState: Memento
+    +workspaceState: Memento
+    
+    ' Extension lifecycle
+    +activate()
+    +deactivate()
+    
+    ' Resource management
+    +asAbsolutePath(relativePath: string): string
+    +storageUri: Uri
+  }
+
   class $state {
     ' Task-related state
     +{static} tasks: TheTask[]
@@ -81,15 +98,25 @@ package "Task Management" {
 }
 
 package "UI Components" {
-  class MainStatusBar {
-    +statusBarItem: StatusBarItem
-    +createStatusBarItem()
-    +update(tasks: TheTask[])
-    +show()
-    +hide()
+  abstract class StatusBar {
+    #statusBarItem: StatusBarItem
+    +show(): void
+    +update(...args: any[]): void
+    +hide(): void
+    +dispose(): void
+    #updateText(text: string): void
+    #updateHover(text: string): void
   }
 
-  class ProgressStatusBar {
+  class MainStatusBar extends StatusBar {
+    +createStatusBarItem(): void
+    +show(): void
+    +update(fewNextTasks: TheTask[]): void
+    -updateHighlighting(due: string): void
+    -doHighlight(highlight: string): void
+  }
+
+  class ProgressStatusBar extends StatusBar {
     +statusBarItem: StatusBarItem
     +createStatusBarItem()
     +update(tasks: TheTask[])
@@ -101,6 +128,17 @@ package "UI Components" {
     +title: string
     +tasks: TheTask[]
     +count: number
+  }
+
+  interface StatusBarItem {
+    text: string
+    tooltip: string
+    color: ThemeColor
+    backgroundColor: ThemeColor
+    command: string
+    show(): void
+    hide(): void
+    dispose(): void
   }
 }
 
@@ -121,6 +159,10 @@ TheTask "1" *-- "*" TheTask : subtasks
 TheTask "1" *-- "0..1" DueDate : has
 $state "1" *-- "1" MainStatusBar : has
 $state "1" *-- "1" ProgressStatusBar : has
+$state "1" *-- "1" ExtensionContext : uses
 $state "1" *-- "*" ItemForProvider : contains
+MainStatusBar --> TheTask
+ProgressStatusBar --> TheTask
+StatusBar --> StatusBarItem
 
 @enduml
