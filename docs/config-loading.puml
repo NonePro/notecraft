@@ -1,0 +1,48 @@
+@startuml VSCode Configuration Loading Mechanism
+
+participant "VS Code Main Process" as Main
+participant "Configuration Service" as Config
+participant "Workspace Service" as Workspace
+participant "Extension Host" as ExtHost
+participant "Extension (notecraft)" as Ext
+
+activate Main
+Main -> Config : Initialize configuration service
+activate Config
+
+Config -> Config : Load default settings
+Config -> Config : Load user settings.json
+note right: From user profile directory
+
+Main -> Workspace : Initialize workspace
+activate Workspace
+Workspace -> Config : Get workspace folder
+Config -> Config : Load workspace settings.json
+note right: From .vscode/settings.json
+
+Main -> ExtHost : Start extension host
+activate ExtHost
+
+ExtHost -> Ext : activate(context)
+activate Ext
+
+Ext -> Ext : assignConfig()
+activate Ext
+Ext -> Workspace : getConfiguration()
+Workspace -> Config : Request configuration
+Config -> Config : Merge settings
+note right: Default < User < Workspace
+Config --> Workspace : Return merged config
+Workspace --> Ext : Return extension config
+Ext -> Ext : Parse and store config
+note right: $config = JSON.parse(...)
+deactivate Ext
+
+Ext -> Ext : Initialize extension state
+Ext -> Ext : Setup event listeners
+note right: For configuration changes
+
+Ext -> ExtHost : Register configuration change handler
+ExtHost -> Config : Subscribe to config changes
+
+@enduml
