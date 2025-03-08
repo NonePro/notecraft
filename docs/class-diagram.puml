@@ -1,0 +1,126 @@
+@startuml
+
+package "State Management" {
+  class $state {
+    ' Task-related state
+    +{static} tasks: TheTask[]
+    +{static} tasksAsTree: TheTask[]
+    +{static} archivedTasks: TheTask[]
+
+    ' Tag and categorization state
+    +{static} tags: string[]
+    +{static} projects: string[]
+    +{static} contexts: string[]
+
+    ' Suggestion state
+    +{static} suggestTags: Record<string, string>
+    +{static} suggestProjects: Record<string, string>
+    +{static} suggestContexts: Record<string, string>
+
+    ' Tree view state
+    +{static} tagsForTreeView: ItemForProvider[]
+    +{static} projectsForTreeView: ItemForProvider[]
+    +{static} contextsForTreeView: ItemForProvider[]
+    +{static} taskTreeViewFilterValue: string
+
+    ' Document state
+    +{static} commentLines: Range[]
+    +{static} documentStartLine: number
+    +{static} activeDocument: TextDocument
+    +{static} activeDocumentTabSize: number
+    +{static} editorLineHeight: number
+
+    ' UI Components state
+    +{static} mainStatusBar: MainStatusBar
+    +{static} progressStatusBar: ProgressStatusBar
+
+    ' File management state
+    +{static} defaultFilePerWorkspace: boolean
+    +{static} defaultFileDoesntExist: boolean
+    +{static} defaultFileReplacedValue: string
+    +{static} defaultArchiveFileReplacedValue: string
+    +{static} lastVisitByFile: Record<string, Date>
+
+    ' Application state
+    +{static} activeEditorMatchesActivatePattern: boolean
+    +{static} isActiveFileTheArchiveFile: boolean
+    +{static} extensionContext: ExtensionContext
+  }
+}
+
+package "Task Management" {
+  class TheTask {
+    ' Core properties
+    +lineNumber: number
+    +rawText: string
+    +title: string
+    +priority: string
+
+    ' Categorization
+    +tags: string[]
+    +projects: string[]
+    +contexts: string[]
+
+    ' Task state
+    +isDone: boolean
+    +isCollapsed: boolean
+
+    ' Time management
+    +due: DueDate
+    +overdue: string
+
+    ' Task hierarchy
+    +subtasks: TheTask[]
+  }
+
+  class DueDate {
+    +raw: string
+    +date: Date
+    +closestDueDateInTheFuture: string
+  }
+}
+
+package "UI Components" {
+  class MainStatusBar {
+    +statusBarItem: StatusBarItem
+    +createStatusBarItem()
+    +update(tasks: TheTask[])
+    +show()
+    +hide()
+  }
+
+  class ProgressStatusBar {
+    +statusBarItem: StatusBarItem
+    +createStatusBarItem()
+    +update(tasks: TheTask[])
+    +show()
+    +hide()
+  }
+
+  interface ItemForProvider {
+    +title: string
+    +tasks: TheTask[]
+    +count: number
+  }
+}
+
+package "Configuration" {
+  class ExtensionConfig {
+    +defaultFile: string
+    +defaultArchiveFile: string
+    +activatePattern: string
+    +tabSize: number
+    +decorations: object
+    +webview: object
+  }
+}
+
+' Relationships
+$state "1" *-- "*" TheTask : contains
+TheTask "1" *-- "*" TheTask : subtasks
+TheTask "1" *-- "0..1" DueDate : has
+$state "1" *-- "1" MainStatusBar : has
+$state "1" *-- "1" ProgressStatusBar : has
+$state "1" *-- "*" ItemForProvider : contains
+
+@enduml
