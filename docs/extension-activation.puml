@@ -1,0 +1,88 @@
+@startuml Extension Activation Sequence
+
+participant "VS Code Main" as Main
+participant "Workbench" as Workbench
+participant "Extension Host" as ExtHost
+participant Extension
+participant "$state" as State
+participant "$config" as Config
+participant "Tree Views" as TreeViews
+participant "Language Features" as LangFeatures
+participant "Status Bar" as StatusBar
+participant "Webview" as Webview
+
+== VS Code Startup ==
+
+[-> Main: start VS Code
+activate Main
+
+Main -> Workbench: initialize workbench
+activate Workbench
+
+Workbench -> Workbench: load workspace
+Workbench -> Workbench: initialize UI components
+
+Workbench -> ExtHost: start extension host process
+activate ExtHost
+
+ExtHost -> ExtHost: scan for extensions
+ExtHost -> ExtHost: load extension manifests
+
+== Extension Activation ==
+
+ExtHost -> Extension: activate(context)
+activate Extension
+
+Extension -> Config: assignConfig()
+activate Config
+Config --> Extension: configuration loaded
+deactivate Config
+
+Extension -> State: initialize state
+activate State
+State --> Extension: state initialized
+deactivate State
+
+Extension -> StatusBar: create status bars
+activate StatusBar
+StatusBar --> Extension: status bars created
+deactivate StatusBar
+
+Extension -> Extension: updateEditorDecorationStyle()
+Extension -> Extension: updateUserSuggestItems()
+Extension -> Extension: registerAllCommands()
+
+Extension -> TreeViews: createAllTreeViews()
+activate TreeViews
+TreeViews --> Extension: tree views created
+deactivate TreeViews
+
+Extension -> Webview: createWebviewView(context)
+activate Webview
+Webview --> Extension: webview created
+deactivate Webview
+
+Extension -> Extension: restoreGlobalState()
+
+alt defaultFileDocument exists
+    Extension -> Extension: check and reset recurring tasks
+    Extension -> Extension: update last visit state
+end
+
+Extension -> Extension: onChangeActiveTextEditor()
+Extension -> TreeViews: updateAllTreeViews()
+Extension -> TreeViews: updateArchivedTasks()
+
+Extension -> LangFeatures: updateLanguageFeatures()
+activate LangFeatures
+LangFeatures --> Extension: language features updated
+deactivate LangFeatures
+
+Extension -> Extension: updateOnDidChangeActiveEditor()
+
+Extension -> ExtHost: register configuration change listener
+
+ExtHost --> Extension: activation complete
+deactivate Extension
+
+@enduml
