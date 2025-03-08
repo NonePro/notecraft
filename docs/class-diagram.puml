@@ -18,6 +18,15 @@ package "State Management" {
     +storageUri: Uri
   }
 
+  class ExtensionConfig {
+    +defaultFile: string
+    +defaultArchiveFile: string
+    +activatePattern: string
+    +tabSize: number
+    +decorations: object
+    +webview: object
+  }
+
   class $state {
     ' Task-related state
     +{static} tasks: TheTask[]
@@ -142,17 +151,6 @@ package "UI Components" {
   }
 }
 
-package "Configuration" {
-  class ExtensionConfig {
-    +defaultFile: string
-    +defaultArchiveFile: string
-    +activatePattern: string
-    +tabSize: number
-    +decorations: object
-    +webview: object
-  }
-}
-
 ' Relationships
 $state "1" *-- "*" TheTask : contains
 TheTask "1" *-- "*" TheTask : subtasks
@@ -164,5 +162,6 @@ $state "1" *-- "*" ItemForProvider : contains
 MainStatusBar --> TheTask
 ProgressStatusBar --> TheTask
 StatusBar --> StatusBarItem
+$state "1" *-- "1" ExtensionConfig : uses
 
 @enduml
