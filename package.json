@@ -30,1941 +30,1941 @@
   ],
   "main": "./dist/extension",
   "contributes": {
-	"configuration": {
-		"type": "object",
-		"title": "NoteCraft",
-		"properties": {
-			"notecraft.webview.showCompleted": {
-				"type": "boolean",
-				"markdownDescription": "Whether completed tasks are shown or not in the webview.",
-				"default": true
-			},
-			"notecraft.webview.completedStrikeThrough": {
-				"type": "boolean",
-				"markdownDescription": "Whether completed tasks should have a line drawn on them in the webview.",
-				"default": false
-			},
-			"notecraft.webview.showRecurringCompleted": {
-				"type": "boolean",
-				"markdownDescription": "Whether recurring completed tasks are shown or not in the webview.",
-				"default": true
-			},
-			"notecraft.webview.showRecurringUpcoming": {
-				"type": "boolean",
-				"markdownDescription": "Whether recurring upcoming (not due) tasks are shown or not in the webview.",
-				"default": true
-			},
-			"notecraft.webview.showPriority": {
-				"type": "boolean",
-				"markdownDescription": "Controls whether priority is shown in the webview.",
-				"default": true
-			},
-			"notecraft.webview.showCheckbox": {
-				"type": "boolean",
-				"markdownDescription": "Controls whether checkbox is shown in the webview.",
-				"default": true
-			},
-			"notecraft.webview.showNestedTaskCount": {
-				"type": "boolean",
-				"markdownDescription": "Controls whether nested tasks indicator (like `0/10`) is shown in the webview.",
-				"default": false
-			},
-			"notecraft.webview.showTaskDetails": {
-				"type": "boolean",
-				"markdownDescription": "When true - show box on the bottom of the webview that shows selected task details.",
-				"default": false
-			},
-			"notecraft.webview.notificationsEnabled": {
-				"type": "boolean",
-				"markdownDescription": "When true - show notification after some actions (like task completion) in a webview.",
-				"default": false
-			},
-			"notecraft.webview.fontSize": {
-				"type": "string",
-				"markdownDescription": "Controls font size in the webview. [CSS Units](https://developer.mozilla.org/en-US/docs/Web/CSS/font-size)",
-				"default": "15px"
-			},
-			"notecraft.webview.fontFamily": {
-				"type": "string",
-				"markdownDescription": "Controls font family in the webview. [CSS Units](https://developer.mozilla.org/en-US/docs/Web/CSS/font-family)",
-				"default": "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji'"
-			},
-			"notecraft.webview.lineHeight": {
-				"type": "number",
-				"markdownDescription": "Controls line height in the webview.",
-				"default": 1.4,
-				"minimum": 1,
-				"maximum": 3
-			},
-			"notecraft.webview.padding": {
-				"type": "string",
-				"markdownDescription": "Controls top & bottom padding. [CSS Units](https://developer.mozilla.org/en-US/docs/Web/CSS/padding)",
-				"default": "2px"
-			},
-			"notecraft.webview.indentSize": {
-				"type": "string",
-				"markdownDescription": "Controls visual indent of nested elements in a webview.",
-				"default": "1.8em"
-			},
-			"notecraft.webview.customCheckboxEnabled": {
-				"type": "boolean",
-				"markdownDescription": "Whether checkbox is rendered as native input element or a custom styled element.",
-				"default": true
-			},
-			"notecraft.webview.autoShowSuggest": {
-				"type": "boolean",
-				"markdownDescription": "Show autocomplete when typing. (When disabled suggest can be called by `Ctrl`+`Space`)",
-				"default": true
-			},
-			"notecraft.webview.focusFilterInputOnClick": {
-				"type": "boolean",
-				"markdownDescription": "Focus filter input after clicking(selecting) any task.",
-				"default": true
-			},
-			"notecraft.webview.customCSSPath": {
-				"type": "string",
-				"markdownDescription": "Absolute path to custom CSS for the webview.",
-				"default": ""
-			},
-			"notecraft.webview.tagStyles": {
-				"type": "object",
-				"markdownDescription": "Set different color for any tag in a webview.",
-				"default": {},
-				"patternProperties": {
-					".+": {
-						"type": "object",
-						"properties": {
-							"color": {
-								"type": "string",
-								"format": "color"
-							},
-							"backgroundColor": {
-								"type": "string",
-								"format": "color"
-							}
-						}
-					}
-				}
-			},
-			"notecraft.defaultFile": {
-				"type": "string",
-				"markdownDescription": "Absolute path to file that Tree Views or commands use when no editor is open that matches `#notecraft.activatePattern#`.\n\n[**Pick default file**](command:notecraft.specifyDefaultFile). Supports using `${workspaceFolder}` variable substitution.",
-				"default": ""
-			},
-			"notecraft.defaultArchiveFile": {
-				"type": "string",
-				"markdownDescription": "Absolute path to file that all archived tasks will be moved to.\n\n[**Pick archive file**](command:notecraft.specifyDefaultArchiveFile).  Supports using `${workspaceFolder}` variable substitution.",
-				"default": ""
-			},
-			"notecraft.defaultSomedayFile": {
-				"type": "string",
-				"markdownDescription": "Absolute path to file that is used as the \"someday\" file.\n\n[**Pick someday file**](command:notecraft.specifyDefaultSomedayFile)",
-				"default": ""
-			},
-			"notecraft.durationIncludeSeconds": {
-				"type": "boolean",
-				"markdownDescription": "When enabled - duration (editor, hover) includes seconds.",
-				"default": false
-			},
-			"notecraft.autoArchiveTasks": {
-				"type": "boolean",
-				"markdownDescription": "When enabled - will move tasks to archive file (on completion).",
-				"default": false
-			},
-			"notecraft.confirmTaskDelete": {
-				"type": "string",
-				"enum": [
-					"always",
-					"never",
-					"hasNestedTasks"
-				],
-				"markdownDescription": "Show confirmation when deleting task from Tree View or Webview.",
-				"default": "always"
-			},
-			"notecraft.activatePattern": {
-				"type": "string",
-				"markdownDescription": "Choose files that extension will operate on. By default activated on 3 files (todo.md, someday.md & todo.archive.md). Uses [Glob](https://code.visualstudio.com/docs/editor/glob-patterns). Examples:\n\nActivate on any (.txt) file - `**/*.txt`.\n\nActivate only on single file (todo.txt) - `**/todo.txt`\n\nActivate on 2 files (todo.txt or task.txt) - `**/{todo,task}.txt`",
-				"default": "**/{todo,someday,todo.archive}.md"
-			},
-			"notecraft.getNextNumberOfTasks": {
-				"type": "integer",
-				"default": 5,
-				"minimum": 1,
-				"maximum": 15,
-				"markdownDescription": "Number of tasks returned by `getFewNextTasks` command."
-			},
-			"notecraft.sortTagsView": {
-				"type": "string",
-				"enum": [
-					"alphabetic",
-					"count"
-				],
-				"default": "alphabetic",
-				"description": "Controls tags Tree View sorting."
-			},
-			"notecraft.sortProjectsView": {
-				"type": "string",
-				"enum": [
-					"alphabetic",
-					"count"
-				],
-				"default": "alphabetic",
-				"description": "Controls projects Tree View sorting."
-			},
-			"notecraft.sortContextsView": {
-				"type": "string",
-				"enum": [
-					"alphabetic",
-					"count"
-				],
-				"default": "alphabetic",
-				"description": "Controls contexts Tree View sorting."
-			},
-			"notecraft.sortNestedTasks": {
-				"type": "string",
-				"enum": [
-					"default",
-					"none"
-				],
-				"enumDescriptions": [
-					"Default sorting (due)",
-					"No sorting"
-				],
-				"default": "default",
-				"description": "Controls nested tasks sorting in Tree Views."
-			},
-			"notecraft.suggestItems": {
-				"type": "object",
-				"markdownDescription": "This extension will only autocomplete tags/projects/contexts located in **1** file. This setting allows you to add items and their description(markdown) to autocomplete in all files (where extension is active). Examples: `#tag`, `+project`, `@context`.",
-				"patternProperties": {
-					"^#": {
-						"type": "string",
-						"description": "Tag"
-					},
-					"^\\+": {
-						"type": "string",
-						"description": "Project"
-					},
-					"^@": {
-						"type": "string",
-						"description": "Context"
-					}
-				},
-				"additionalProperties": false,
-				"default": {}
-			},
-			"notecraft.counterBadgeEnabled": {
-				"type": "boolean",
-				"markdownDescription": "Shows small badge to show a number of times the tag/project/context is present in the active document.",
-				"default": false
-			},
-			"notecraft.progressChartEnabled": {
-				"type": "boolean",
-				"markdownDescription": "Controls whether editor nested task decoration (pie chart) is shown or not.",
-				"default": true
-			},
-			"notecraft.progressBackground": {
-				"type": "string",
-				"markdownDescription": "Editor decoration for nested tasks progress (pie chart) background.",
-				"format": "color",
-				"default": "#c6cdd3"
-			},
-			"notecraft.progressForeground": {
-				"type": "string",
-				"markdownDescription": "Editor decoration for nested tasks progress (pie chart) foreground.",
-				"format": "color",
-				"default": "#0077AA"
-			},
-			"notecraft.statusBarMainEnabled": {
-				"type": "boolean",
-				"markdownDescription": "Controls visibility of status bar that shows next tasks to complete.",
-				"markdownDeprecationMessage": "Deprecated in favor of `#notecraft.mainStatusBarItem#` setting.",
-				"default": false
-			},
-			"notecraft.mainStatusBarItem": {
-				"type": "object",
-				"properties": {
-					"enabled": {
-						"type": "boolean",
-						"markdownDescription": "Controls visibility of this status bar item.",
-						"default": false
-					},
-					"hoverEnabled": {
-						"type": "boolean",
-						"markdownDescription": "Controls whether or not to show hover for this status bar item",
-						"default": true
-					},
-					"alignment": {
-						"type": "string",
-						"default": "left",
-						"enum": [
-							"left",
-							"right"
-						]
-					},
-					"priority": {
-						"type": "integer",
-						"default": -20001
-					},
-					"truncate": {
-						"type": "integer",
-						"markdownDescription": "If the message length is longer - crop it at the end. `0` to disable.",
-						"minimum": 0,
-						"default": 0
-					},
-					"onClick": {
-						"type": "string",
-						"enum": [
-							"completeTask",
-							"revealTask",
-							"nothing"
-						],
-						"default": "completeTask",
-						"markdownDescription": "Controls visibility of status bar that shows next tasks to complete."
-					},
-					"targetTasks": {
-						"type": "string",
-						"enum": [
-							"all",
-							"due"
-						],
-						"default": "all"
-					},
-					"highlightOverdue": {
-						"type": "string",
-						"enum": [
-							"none",
-							"errorBg",
-							"errorFg",
-							"warningBg",
-							"warningFg"
-						],
-						"default": "none"
-					},
-					"highlightDue": {
-						"type": "string",
-						"enum": [
-							"none",
-							"errorBg",
-							"errorFg",
-							"warningBg",
-							"warningFg"
-						],
-						"default": "none"
-					}
-				},
-				"default": {
-					"enabled": false,
-					"hoverEnabled": true,
-					"alignment": "left",
-					"priority": -20001,
-					"truncate": 0,
-					"onClick": "completeTask",
-					"targetTasks": "all",
-					"highlightOverdue": "none",
-					"highlightDue": "none"
-				},
-				"additionalProperties": false,
-				"markdownDescription": "Configure appearance/behavior of main status bar item (shows next task to complete)."
-			},
-			"notecraft.progressStatusBarItem": {
-				"type": "object",
-				"properties": {
-					"enabled": {
-						"type": "boolean",
-						"markdownDescription": "Controls visibility of this status bar item.",
-						"default": false
-					},
-					"alignment": {
-						"type": "string",
-						"default": "left",
-						"enum": [
-							"left",
-							"right"
-						]
-					},
-					"priority": {
-						"type": "integer",
-						"default": -20000
-					}
-				},
-				"default": {
-					"enabled": false,
-					"alignment": "left",
-					"priority": -20000
-				},
-				"additionalProperties": false,
-				"markdownDescription": "Configure appearance/behavior of the progress status bar item (shows only when active text editor matches `#notecraft.activatePattern#`) with text format: `1/3 33%`."
-			},
-			"notecraft.addCreationDate": {
-				"type": "boolean",
-				"markdownDescription": "When creating a task add creation date to it: `{cr:2020-04-30}`",
-				"default": false
-			},
-			"notecraft.completionDateIncludeDate": {
-				"type": "boolean",
-				"markdownDescription": "Whether to include date when completing a task: `{cm}` vs `{cm:2020-04-30}`",
-				"default": true
-			},
-			"notecraft.completionDateIncludeTime": {
-				"type": "boolean",
-				"markdownDescription": "When completing a task add date and time: `{cm:2020-04-30T09:11:17}`",
-				"default": false
-			},
-			"notecraft.creationDateIncludeTime": {
-				"type": "boolean",
-				"markdownDescription": "When creating a task add date and time: `{cr:2020-04-30T09:11:17}`",
-				"default": false
-			},
-			"notecraft.closestDueDateIncludeWeekday": {
-				"type": "boolean",
-				"markdownDescription": "When enabled - editor decoration that shows number of days to the due date adds the weekday name.",
-				"default": false
-			},
-			"notecraft.autoBumpRecurringOverdueDate": {
-				"type": "boolean",
-				"markdownDescription": "When completing overdue recurring task - replace the starting date with today's date.",
-				"default": false
-			},
-			"notecraft.isDev": {
-				"type": "boolean",
-				"markdownDescription": "For emulating dev mode. Most likely of no use to anyone, except the extension author.",
-				"default": false
-			},
-			"notecraft.tabSize": {
-				"type": "number",
-				"minimum": 1,
-				"maximum": 8,
-				"markdownDescription": "Number used for parsing nested tasks when indentation cannot be guessed (file is not opened in editor).",
-				"default": 4
-			},
-			"notecraft.savedFilters": {
-				"type": "array",
-				"items": {
-					"type": "object",
-					"properties": {
-						"title": {
-							"type": "string"
-						},
-						"filter": {
-							"type": "string"
-						}
-					}
-				},
-				"markdownDescription": "Filters that you can pick when applying a filter.",
-				"default": []
-			},
-			"notecraft.treeViews": {
-				"type": "array",
-				"items": {
-					"type": "object",
-					"required": [
-						"filter",
-						"title"
-					],
-					"properties": {
-						"title": {
-							"type": "string"
-						},
-						"filter": {
-							"type": "string"
-						}
-					}
-				},
-				"maxLength": 3,
-				"markdownDescription": "Add more tree views with predefined filters.",
-				"default": []
-			},
-			"notecraft.treeView.showBadge": {
-				"type": "boolean",
-				"markdownDescription": "Whether or not to show due tasks counter badge for tree view container.",
-				"default": true
-			},
-			"notecraft.treeView.useVscodeCheckboxApi": {
-				"type": "boolean",
-				"markdownDescription": "When checked - will use vscode api to show checkboxes https://github.com/microsoft/vscode/issues/116141.",
-				"default": true
-			},
-			"notecraft.labelDueSymbol": {
-				"type": "string",
-				"markdownDescription": "Prefix for task that is due in labels (tree view, notification, modal, quick pick).",
-				"default": "📗 "
-			},
-			"notecraft.labelNotDueSymbol": {
-				"type": "string",
-				"markdownDescription": "Prefix for task that that is not due in labels (tree view, notification, modal, quick pick).",
-				"default": "📅 "
-			},
-			"notecraft.labelOverdueSymbol": {
-				"type": "string",
-				"markdownDescription": "Prefix for task that is overdue in labels (tree view, notification, modal, quick pick).",
-				"default": "📕 "
-			},
-			"notecraft.labelInvalidDueSymbol": {
-				"type": "string",
-				"markdownDescription": "Prefix for task that has invalid due date in labels (tree view, notification, modal, quick pick).",
-				"default": "🟣 "
-			},
-			"notecraft.labelFavorite": {
-				"type": "string",
-				"markdownDescription": "Label shown when task has favorite `{f}` special tag. (tree view, notification, modal, quick pick)",
-				"default": " ❤️ "
-			},
-			"notecraft.labelShowItems": {
-				"type": "boolean",
-				"markdownDescription": "Show projects/tags/contexts in labels (tree view, notification, modal, quick pick).",
-				"default": true
-			},
-			"notecraft.useBoldTextInLabels": {
-				"type": "boolean",
-				"markdownDescription": "Show projects/tags/contexts in labels in **BOLD**.",
-				"default": true
-			},
-			"notecraft.completedStrikeThrough": {
-				"type": "boolean",
-				"markdownDescription": "Show strike-through text decoration for completed tasks in editor.",
-				"default": true
-			},
-			"notecraft.setDueDateThisWeekDay": {
-				"type": "string",
-				"markdownDescription": "Week day when using set due date command or suggest `SET_DUE_THIS_WEEK`.",
-				"enum": [
-					"Friday",
-					"Sunday"
-				],
-				"default": "Friday"
-			},
-			"notecraft.setDueDateNextWeekDay": {
-				"type": "string",
-				"markdownDescription": "Week day when using set due date command or suggest `SET_DUE_NEXT_WEEK`.",
-				"enum": [
-					"Monday",
-					"Friday",
-					"Sunday"
-				],
-				"default": "Friday"
-			},
-			"notecraft.commentFormat": {
-				"type": "object",
-				"properties": {
-					"start": {
-						"type": "string",
-						"minLength": 1,
-						"default": "# "
-					},
-					"end": {
-						"type": "string",
-						"default": ""
-					}
-				},
-				"additionalProperties": false,
-				"markdownDescription": "Choose comment symbols (only works at the beginning of the line).",
-				"default": {
-					"start": "# ",
-					"end": ""
-				}
-			},
-			"notecraft.decorations": {
-				"type": "object",
-				"markdownDescription": "Advanced text editor decoration tweaking. [docs](https://github.com/usernamehw/vscode-todo-md/blob/master/docs/docs.md#advanced-editor-decorations)",
-				"default": {
-					"project": {},
-					"context": {},
-					"tag": {},
-					"comment": {},
-					"notDue": {},
-					"due": {},
-					"overdue": {},
-					"invalidDue": {},
-					"favorite": {},
-					"priorityA": {},
-					"priorityB": {},
-					"priorityC": {},
-					"priorityD": {},
-					"priorityE": {},
-					"priorityF": {},
-					"completedTask": {}
-				},
-				"patternProperties": {
-					"^(project|context|tag|comment|notDue|due|overdue|invalidDue|favorite|priorityA|priorityB|priorityC|priorityD|priorityE|priorityF|completedTask|(#|\\+|@)\\S+)$": {
-						"type": "object",
-						"properties": {
-							"isWholeLine": {
-								"description": "Should the decoration be rendered also on the whitespace after the line text.\nDefaults to `false`.",
-								"type": "boolean"
-							},
-							"rangeBehavior": {
-								"description": "Customize the growing behavior of the decoration when edits occur at the edges of the decoration's range.\nDefaults to `DecorationRangeBehavior.OpenOpen`.",
-								"enum": [
-									0,
-									1,
-									2,
-									3
-								],
-								"type": "number",
-								"enumDescriptions": [
-									"OpenOpen",
-									"ClosedClosed",
-									"OpenClosed",
-									"ClosedOpen"
-								]
-							},
-							"overviewRulerLane": {
-								"enum": [
-									1,
-									2,
-									4,
-									7
-								],
-								"type": "number",
-								"enumDescriptions": [
-									"Left",
-									"Center",
-									"Right",
-									"Full"
-								]
-							},
-							"light": {
-								"description": "Represents theme specific rendering styles for a [text editor decoration](#TextEditorDecorationType).",
-								"type": "object",
-								"properties": {
-									"backgroundColor": {
-										"format": "color",
-										"type": "string"
-									},
-									"outline": {
-										"type": "string"
-									},
-									"outlineColor": {
-										"format": "color",
-										"type": "string"
-									},
-									"outlineStyle": {
-										"type": "string"
-									},
-									"outlineWidth": {
-										"type": "string"
-									},
-									"border": {
-										"type": "string"
-									},
-									"borderColor": {
-										"format": "color",
-										"type": "string"
-									},
-									"borderRadius": {
-										"type": "string"
-									},
-									"borderSpacing": {
-										"type": "string"
-									},
-									"borderStyle": {
-										"type": "string"
-									},
-									"borderWidth": {
-										"type": "string"
-									},
-									"fontStyle": {
-										"type": "string"
-									},
-									"fontWeight": {
-										"type": "string"
-									},
-									"textDecoration": {
-										"type": "string"
-									},
-									"cursor": {
-										"type": "string"
-									},
-									"color": {
-										"format": "color",
-										"type": "string"
-									},
-									"opacity": {
-										"type": "string"
-									},
-									"letterSpacing": {
-										"type": "string"
-									},
-									"gutterIconPath": {
-										"description": "An **absolute path** or an URI to an image to be rendered in the gutter.",
-										"type": "string"
-									},
-									"gutterIconSize": {
-										"description": "Specifies the size of the gutter icon.\nAvailable values are 'auto', 'contain', 'cover' and any percentage value.\nFor further information: https://msdn.microsoft.com/en-us/library/jj127316(v=vs.85).aspx",
-										"type": "string"
-									},
-									"overviewRulerColor": {
-										"format": "color",
-										"type": "string"
-									},
-									"before": {
-										"description": "Defines the rendering options of the attachment that is inserted before the decorated text.",
-										"type": "object",
-										"properties": {
-											"contentText": {
-												"description": "Defines a text content that is shown in the attachment. Either an icon or a text can be shown, but not both.",
-												"type": "string"
-											},
-											"contentIconPath": {
-												"description": "An **absolute path** or an URI to an image to be rendered in the attachment. Either an icon\nor a text can be shown, but not both.",
-												"type": "string"
-											},
-											"border": {
-												"type": "string"
-											},
-											"borderColor": {
-												"format": "color",
-												"type": "string"
-											},
-											"fontStyle": {
-												"type": "string"
-											},
-											"fontWeight": {
-												"type": "string"
-											},
-											"textDecoration": {
-												"type": "string"
-											},
-											"color": {
-												"format": "color",
-												"type": "string"
-											},
-											"backgroundColor": {
-												"format": "color",
-												"type": "string"
-											},
-											"margin": {
-												"type": "string"
-											},
-											"width": {
-												"type": "string"
-											},
-											"height": {
-												"type": "string"
-											}
-										}
-									},
-									"after": {
-										"description": "Defines the rendering options of the attachment that is inserted after the decorated text.",
-										"type": "object",
-										"properties": {
-											"contentText": {
-												"description": "Defines a text content that is shown in the attachment. Either an icon or a text can be shown, but not both.",
-												"type": "string"
-											},
-											"contentIconPath": {
-												"description": "An **absolute path** or an URI to an image to be rendered in the attachment. Either an icon\nor a text can be shown, but not both.",
-												"type": "string"
-											},
-											"border": {
-												"type": "string"
-											},
-											"borderColor": {
-												"format": "color",
-												"type": "string"
-											},
-											"fontStyle": {
-												"type": "string"
-											},
-											"fontWeight": {
-												"type": "string"
-											},
-											"textDecoration": {
-												"type": "string"
-											},
-											"color": {
-												"format": "color",
-												"type": "string"
-											},
-											"backgroundColor": {
-												"format": "color",
-												"type": "string"
-											},
-											"margin": {
-												"type": "string"
-											},
-											"width": {
-												"type": "string"
-											},
-											"height": {
-												"type": "string"
-											}
-										}
-									}
-								}
-							},
-							"dark": {
-								"description": "Represents theme specific rendering styles for a [text editor decoration](#TextEditorDecorationType).",
-								"type": "object",
-								"properties": {
-									"backgroundColor": {
-										"format": "color",
-										"type": "string"
-									},
-									"outline": {
-										"type": "string"
-									},
-									"outlineColor": {
-										"format": "color",
-										"type": "string"
-									},
-									"outlineStyle": {
-										"type": "string"
-									},
-									"outlineWidth": {
-										"type": "string"
-									},
-									"border": {
-										"type": "string"
-									},
-									"borderColor": {
-										"format": "color",
-										"type": "string"
-									},
-									"borderRadius": {
-										"type": "string"
-									},
-									"borderSpacing": {
-										"type": "string"
-									},
-									"borderStyle": {
-										"type": "string"
-									},
-									"borderWidth": {
-										"type": "string"
-									},
-									"fontStyle": {
-										"type": "string"
-									},
-									"fontWeight": {
-										"type": "string"
-									},
-									"textDecoration": {
-										"type": "string"
-									},
-									"cursor": {
-										"type": "string"
-									},
-									"color": {
-										"format": "color",
-										"type": "string"
-									},
-									"opacity": {
-										"type": "string"
-									},
-									"letterSpacing": {
-										"type": "string"
-									},
-									"gutterIconPath": {
-										"description": "An **absolute path** or an URI to an image to be rendered in the gutter.",
-										"type": "string"
-									},
-									"gutterIconSize": {
-										"description": "Specifies the size of the gutter icon.\nAvailable values are 'auto', 'contain', 'cover' and any percentage value.\nFor further information: https://msdn.microsoft.com/en-us/library/jj127316(v=vs.85).aspx",
-										"type": "string"
-									},
-									"overviewRulerColor": {
-										"format": "color",
-										"type": "string"
-									},
-									"before": {
-										"description": "Defines the rendering options of the attachment that is inserted before the decorated text.",
-										"type": "object",
-										"properties": {
-											"contentText": {
-												"description": "Defines a text content that is shown in the attachment. Either an icon or a text can be shown, but not both.",
-												"type": "string"
-											},
-											"contentIconPath": {
-												"description": "An **absolute path** or an URI to an image to be rendered in the attachment. Either an icon\nor a text can be shown, but not both.",
-												"type": "string"
-											},
-											"border": {
-												"type": "string"
-											},
-											"borderColor": {
-												"format": "color",
-												"type": "string"
-											},
-											"fontStyle": {
-												"type": "string"
-											},
-											"fontWeight": {
-												"type": "string"
-											},
-											"textDecoration": {
-												"type": "string"
-											},
-											"color": {
-												"format": "color",
-												"type": "string"
-											},
-											"backgroundColor": {
-												"format": "color",
-												"type": "string"
-											},
-											"margin": {
-												"type": "string"
-											},
-											"width": {
-												"type": "string"
-											},
-											"height": {
-												"type": "string"
-											}
-										}
-									},
-									"after": {
-										"description": "Defines the rendering options of the attachment that is inserted after the decorated text.",
-										"type": "object",
-										"properties": {
-											"contentText": {
-												"description": "Defines a text content that is shown in the attachment. Either an icon or a text can be shown, but not both.",
-												"type": "string"
-											},
-											"contentIconPath": {
-												"description": "An **absolute path** or an URI to an image to be rendered in the attachment. Either an icon\nor a text can be shown, but not both.",
-												"type": "string"
-											},
-											"border": {
-												"type": "string"
-											},
-											"borderColor": {
-												"format": "color",
-												"type": "string"
-											},
-											"fontStyle": {
-												"type": "string"
-											},
-											"fontWeight": {
-												"type": "string"
-											},
-											"textDecoration": {
-												"type": "string"
-											},
-											"color": {
-												"format": "color",
-												"type": "string"
-											},
-											"backgroundColor": {
-												"format": "color",
-												"type": "string"
-											},
-											"margin": {
-												"type": "string"
-											},
-											"width": {
-												"type": "string"
-											},
-											"height": {
-												"type": "string"
-											}
-										}
-									}
-								}
-							},
-							"backgroundColor": {
-								"format": "color",
-								"type": "string"
-							},
-							"outline": {
-								"type": "string"
-							},
-							"outlineColor": {
-								"format": "color",
-								"type": "string"
-							},
-							"outlineStyle": {
-								"type": "string"
-							},
-							"outlineWidth": {
-								"type": "string"
-							},
-							"border": {
-								"type": "string"
-							},
-							"borderColor": {
-								"format": "color",
-								"type": "string"
-							},
-							"borderRadius": {
-								"type": "string"
-							},
-							"borderSpacing": {
-								"type": "string"
-							},
-							"borderStyle": {
-								"type": "string"
-							},
-							"borderWidth": {
-								"type": "string"
-							},
-							"fontStyle": {
-								"type": "string"
-							},
-							"fontWeight": {
-								"type": "string"
-							},
-							"textDecoration": {
-								"type": "string"
-							},
-							"cursor": {
-								"type": "string"
-							},
-							"color": {
-								"format": "color",
-								"type": "string"
-							},
-							"opacity": {
-								"type": "string"
-							},
-							"letterSpacing": {
-								"type": "string"
-							},
-							"gutterIconPath": {
-								"description": "An **absolute path** or an URI to an image to be rendered in the gutter.",
-								"type": "string"
-							},
-							"gutterIconSize": {
-								"description": "Specifies the size of the gutter icon.\nAvailable values are 'auto', 'contain', 'cover' and any percentage value.\nFor further information: https://msdn.microsoft.com/en-us/library/jj127316(v=vs.85).aspx",
-								"type": "string"
-							},
-							"overviewRulerColor": {
-								"format": "color",
-								"type": "string"
-							},
-							"before": {
-								"description": "Defines the rendering options of the attachment that is inserted before the decorated text.",
-								"type": "object",
-								"properties": {
-									"contentText": {
-										"description": "Defines a text content that is shown in the attachment. Either an icon or a text can be shown, but not both.",
-										"type": "string"
-									},
-									"contentIconPath": {
-										"description": "An **absolute path** or an URI to an image to be rendered in the attachment. Either an icon\nor a text can be shown, but not both.",
-										"type": "string"
-									},
-									"border": {
-										"type": "string"
-									},
-									"borderColor": {
-										"format": "color",
-										"type": "string"
-									},
-									"fontStyle": {
-										"type": "string"
-									},
-									"fontWeight": {
-										"type": "string"
-									},
-									"textDecoration": {
-										"type": "string"
-									},
-									"color": {
-										"format": "color",
-										"type": "string"
-									},
-									"backgroundColor": {
-										"format": "color",
-										"type": "string"
-									},
-									"margin": {
-										"type": "string"
-									},
-									"width": {
-										"type": "string"
-									},
-									"height": {
-										"type": "string"
-									}
-								}
-							},
-							"after": {
-								"description": "Defines the rendering options of the attachment that is inserted after the decorated text.",
-								"type": "object",
-								"properties": {
-									"contentText": {
-										"description": "Defines a text content that is shown in the attachment. Either an icon or a text can be shown, but not both.",
-										"type": "string"
-									},
-									"contentIconPath": {
-										"description": "An **absolute path** or an URI to an image to be rendered in the attachment. Either an icon\nor a text can be shown, but not both.",
-										"type": "string"
-									},
-									"border": {
-										"type": "string"
-									},
-									"borderColor": {
-										"format": "color",
-										"type": "string"
-									},
-									"fontStyle": {
-										"type": "string"
-									},
-									"fontWeight": {
-										"type": "string"
-									},
-									"textDecoration": {
-										"type": "string"
-									},
-									"color": {
-										"format": "color",
-										"type": "string"
-									},
-									"backgroundColor": {
-										"format": "color",
-										"type": "string"
-									},
-									"margin": {
-										"type": "string"
-									},
-									"width": {
-										"type": "string"
-									},
-									"height": {
-										"type": "string"
-									}
-								}
-							}
-						}
-					}
-				},
-				"additionalProperties": false
-			}
-		}
-	},
-	"commands": [
-		{
-			"command": "notecraft.toggleComment",
-			"title": "Toggle Comment",
-			"description": "Toggle comment. <kbd>Ctrl/Cmd</kbd>+<kbd>/</kbd> (Only when in todo.md file)",
-			"category": "Note Craft"
-		},
-		{
-			"command": "notecraft.toggleTagsTreeViewSorting",
-			"title": "Toggle Tags Tree View Sorting",
-			"category": "Note Craft",
-			"icon": "$(ungroup-by-ref-type)"
-		},
-		{
-			"command": "notecraft.toggleProjectsTreeViewSorting",
-			"title": "Toggle Projects Tree View Sorting",
-			"category": "Note Craft",
-			"icon": "$(ungroup-by-ref-type)"
-		},
-		{
-			"command": "notecraft.toggleContextsTreeViewSorting",
-			"title": "Toggle Contexts Tree View Sorting",
-			"category": "Note Craft",
-			"icon": "$(ungroup-by-ref-type)"
-		},
-		{
-			"command": "notecraft.showWebviewSettings",
-			"title": "Show Webview Settings",
-			"category": "Note Craft",
-			"icon": "$(settings-gear)"
-		},
-		{
-			"command": "notecraft.webview.pickSort",
-			"title": "Sort",
-			"icon": "$(sort-precedence)"
-		},
-		{
-			"command": "notecraft.webview.toggleShowRecurringUpcoming",
-			"title": "Toggle setting to show recurring upcoming tasks in webview.",
-			"category": "Note Craft",
-			"icon": "$(milestone)"
-		},
-		{
-			"command": "notecraft.focusTasksWebviewAndInput",
-			"title": "Focus Tasks Webview and its filter input",
-			"description": "Supports arguments {\"selectInputText\": boolean, \"fillInputValue\": string}",
-			"category": "Note Craft"
-		},
-		{
-			"command": "notecraft.collapseAllNestedTasks",
-			"title": "Collapse all nested tasks.",
-			"category": "Note Craft",
-			"icon": "$(collapse-all)"
-		},
-		{
-			"command": "notecraft.expandAllTasks",
-			"title": "Expand all tasks.",
-			"category": "Note Craft",
-			"icon": "$(expand-all)"
-		},
-		{
-			"command": "notecraft.incrementPriority",
-			"title": "Increment priority",
-			"category": "Note Craft"
-		},
-		{
-			"command": "notecraft.decrementPriority",
-			"title": "Decrement priority",
-			"category": "Note Craft"
-		},
-		{
-			"command": "notecraft.toggleDone",
-			"title": "Toggle completion",
-			"description": "<kbd>Alt</kbd>+<kbd>D</kbd> - Toggle Done (Completion)",
-			"category": "Note Craft",
-			"icon": "$(check)"
-		},
-		{
-			"command": "notecraft.hideTask",
-			"title": "Hide the Task",
-			"category": "Note Craft"
-		},
-		{
-			"command": "notecraft.deleteTask",
-			"title": "Delete the Task",
-			"category": "Note Craft"
-		},
-		{
-			"command": "notecraft.addTaskToDefaultFile",
-			"title": "Add a Task to DEFAULT file",
-			"category": "Note Craft",
-			"icon": "$(add)"
-		},
-		{
-			"command": "notecraft.addTaskToActiveFile",
-			"title": "Add a Task to ACTIVE file",
-			"category": "Note Craft",
-			"icon": "$(add)"
-		},
-		{
-			"command": "notecraft.addTaskToActiveFileWebview",
-			"title": "Add a Task to ACTIVE file",
-			"category": "Note Craft",
-			"icon": "$(add)"
-		},
-		{
-			"command": "notecraft.sortByDefault",
-			"title": "Sort by Due Date & Priority (default sort)",
-			"category": "Note Craft"
-		},
-		{
-			"command": "notecraft.sortByPriority",
-			"title": "Sort by Priority",
-			"category": "Note Craft"
-		},
-		{
-			"command": "notecraft.sortByProject",
-			"title": "Sort by Project",
-			"category": "Note Craft"
-		},
-		{
-			"command": "notecraft.sortByTag",
-			"title": "Sort by Tag",
-			"category": "Note Craft"
-		},
-		{
-			"command": "notecraft.sortByContext",
-			"title": "Sort by Context",
-			"category": "Note Craft"
-		},
-		{
-			"command": "notecraft.sortByCreationDate",
-			"title": "Sort by Creation Date",
-			"category": "Note Craft"
-		},
-		{
-			"command": "notecraft.sortByDueDate",
-			"title": "Sort by Due Date",
-			"category": "Note Craft"
-		},
-		{
-			"command": "notecraft.sortByCompletionDate",
-			"title": "Sort by Completion Date",
-			"category": "Note Craft"
-		},
-		{
-			"command": "notecraft.setDueDate",
-			"description": "Helper command to set due date relative to now. [Docs](https://github.com/usernamehw/vscode-todo-md/blob/master/docs/docs.md#set-due-date-helper-function-notecraftsetduedate)",
-			"title": "Set due date",
-			"category": "Note Craft"
-		},
-		{
-			"command": "notecraft.setDate",
-			"title": "Set date",
-			"category": "Note Craft"
-		},
-		{
-			"command": "notecraft.archiveCompletedTasks",
-			"title": "Move completed tasks to Archive file",
-			"category": "Note Craft"
-		},
-		{
-			"command": "notecraft.startTask",
-			"description": "Start task (when completed adds `{duration}` special tag)",
-			"title": "Start",
-			"category": "Note Craft"
-		},
-		{
-			"command": "notecraft.toggleFavorite",
-			"description": "Toggle Favorite (`{f}` special tag).",
-			"title": "Toggle Favorite",
-			"category": "Note Craft"
-		},
-		{
-			"command": "notecraft.openDefaultFile",
-			"title": "Open default file",
-			"category": "Note Craft",
-			"icon": "$(go-to-file)"
-		},
-		{
-			"command": "notecraft.openDefaultArchiveFile",
-			"title": "Open default Archive file",
-			"category": "Note Craft"
-		},
-		{
-			"command": "notecraft.openSomedayFile",
-			"title": "Open Someday file",
-			"category": "Note Craft"
-		},
-		{
-			"command": "notecraft.createSimilarTask",
-			"title": "Create similar task (same tags, projects, contexts).",
-			"category": "Note Craft"
-		},
-		{
-			"command": "notecraft.completeTask",
-			"title": "Complete a Task",
-			"category": "Note Craft"
-		},
-		{
-			"command": "notecraft.getNextTask",
-			"description": "Get due task from main file. If none are due - get one with the highest priority.",
-			"title": "Get 1 next task",
-			"category": "Note Craft"
-		},
-		{
-			"command": "notecraft.getFewNextTasks",
-			"description": "Get several tasks. Due tasks are on top.",
-			"title": "Get a few next tasks.",
-			"category": "Note Craft"
-		},
-		{
-			"command": "notecraft.getRandomTask",
-			"title": "Get random task",
-			"category": "Note Craft"
-		},
-		{
-			"command": "notecraft.applyFilterToTreeView",
-			"title": "Apply Filter",
-			"category": "Note Craft",
-			"icon": "$(filter)"
-		},
-		{
-			"command": "notecraft.clearTreeViewFilter",
-			"title": "Clear Filter",
-			"category": "Note Craft",
-			"icon": "$(clear-all)"
-		},
-		{
-			"command": "notecraft.resetAllRecurringTasks",
-			"title": "Reset all Recurring tasks",
-			"category": "Note Craft"
-		},
-		{
-			"command": "notecraft.followLink",
-			"title": "Follow link",
-			"category": "Note Craft"
-		},
-		{
-			"command": "notecraft.removeOverdue",
-			"title": "Remove overdue",
-			"category": "Note Craft"
-		},
-		{
-			"command": "notecraft.moveToSomeday",
-			"title": "Move to Someday file",
-			"category": "Note Craft"
-		},
-		{
-			"command": "notecraft.dev.clearGlobalState",
-			"title": "DEV: Clear global state",
-			"category": "Note Craft"
-		},
-		{
-			"command": "notecraft.dev.setLastVisit",
-			"title": "DEV: Set last visit",
-			"category": "Note Craft"
-		},
-		{
-			"command": "notecraft.dev.showGlobalState",
-			"title": "DEV: Show Global State",
-			"category": "Note Craft"
-		},
-		{
-			"command": "notecraft.dev.removeAllOverdue",
-			"title": "DEV: Remove all overdue tags.",
-			"category": "Note Craft"
-		}
-	],
-	"keybindings": [
-		{
-			"command": "notecraft.toggleDone",
-			"key": "alt+D",
-			"when": "editorTextFocus && notecraft:isActive"
-		},
-		{
-			"command": "notecraft.toggleComment",
-			"key": "ctrl+/",
-			"mac": "cmd+/",
-			"when": "editorTextFocus && notecraft:isActive"
-		}
-	],
-	"colors": [
-		{
-			"id": "notecraft.favoriteTaskBackground",
-			"defaults": {
-				"light": "#f62caf18",
-				"dark": "#f62caf18",
-				"highContrast": "#f62caf18"
-			},
-			"description": "Entire line background color for favorite tasks `{f}`."
-		},
-		{
-			"id": "notecraft.commentForeground",
-			"defaults": {
-				"light": "#b4b4b4",
-				"dark": "#b4b4b4",
-				"highContrast": "#b4b4b4"
-			},
-			"description": "Color of comments `# Comment`"
-		},
-		{
-			"id": "notecraft.priorityAForeground",
-			"defaults": {
-				"light": "#ec4f47",
-				"dark": "#ec4f47",
-				"highContrast": "#ec4f47"
-			},
-			"description": "`(A)`"
-		},
-		{
-			"id": "notecraft.priorityBForeground",
-			"defaults": {
-				"light": "#fd9f9a",
-				"dark": "#fd9f9a",
-				"highContrast": "#fd9f9a"
-			},
-			"description": "`(B)`"
-		},
-		{
-			"id": "notecraft.priorityCForeground",
-			"defaults": {
-				"light": "#ffb648",
-				"dark": "#ffb039",
-				"highContrast": "#ffb648"
-			},
-			"description": "`(C)`"
-		},
-		{
-			"id": "notecraft.priorityDForeground",
-			"defaults": {
-				"light": "#f1d900",
-				"dark": "#e2cb00",
-				"highContrast": "#f1d900"
-			},
-			"description": "`(D)`"
-		},
-		{
-			"id": "notecraft.priorityEForeground",
-			"defaults": {
-				"light": "#ace000",
-				"dark": "#97c500",
-				"highContrast": "#ace000"
-			},
-			"description": "`(E)`"
-		},
-		{
-			"id": "notecraft.priorityFForeground",
-			"defaults": {
-				"light": "#00cfad",
-				"dark": "#00cfad",
-				"highContrast": "#00cfad"
-			},
-			"description": "`(F)`"
-		},
-		{
-			"id": "notecraft.tagForeground",
-			"defaults": {
-				"light": "#029cdf",
-				"dark": "#1abaff",
-				"highContrast": "#1abaff"
-			},
-			"description": "Tag color `#Tag`"
-		},
-		{
-			"id": "notecraft.contextForeground",
-			"defaults": {
-				"light": "#7284eb",
-				"dark": "#7284eb",
-				"highContrast": "#7284eb"
-			},
-			"description": "Context color `@Context`"
-		},
-		{
-			"id": "notecraft.specialTagForeground",
-			"defaults": {
-				"light": "#7e8081",
-				"dark": "#c3ccfc",
-				"highContrast": "#c3ccfc"
-			},
-			"description": "Color of special tags `{h}`"
-		},
-		{
-			"id": "notecraft.projectForeground",
-			"defaults": {
-				"light": "#36cc9a",
-				"dark": "#36cc9a",
-				"highContrast": "#36cc9a"
-			},
-			"description": "Project color `+Project`"
-		},
-		{
-			"id": "notecraft.notDueForeground",
-			"defaults": {
-				"light": "#7e8081",
-				"dark": "#c3ccfc",
-				"highContrast": "#c3ccfc"
-			},
-			"description": "Not due"
-		},
-		{
-			"id": "notecraft.dueForeground",
-			"defaults": {
-				"light": "#01c208",
-				"dark": "#35c03a",
-				"highContrast": "#37df3d"
-			},
-			"description": "Due"
-		},
-		{
-			"id": "notecraft.overdueForeground",
-			"defaults": {
-				"light": "#d44343",
-				"dark": "#d44343",
-				"highContrast": "#f64f4f"
-			},
-			"description": "Overdue"
-		},
-		{
-			"id": "notecraft.invalidDueDateForeground",
-			"defaults": {
-				"light": "#ffffff",
-				"dark": "#ffffff",
-				"highContrast": "#ffffff"
-			},
-			"description": "Due date that is either has an invalid format `2020-05` or an invalid date `2020-12-35`"
-		},
-		{
-			"id": "notecraft.invalidDueDateBackground",
-			"defaults": {
-				"light": "#7284eb",
-				"dark": "#7284eb",
-				"highContrast": "#7284eb"
-			},
-			"description": "Due date that is either has an invalid format `2020-05` or an invalid date `2020-12-35`"
-		},
-		{
-			"id": "notecraft.nestedTasksCountBackground",
-			"defaults": {
-				"light": "#f7f3c099",
-				"dark": "#e0d971",
-				"highContrast": "#e0d971"
-			},
-			"description": "Nested tasks counter editor decoration background."
-		},
-		{
-			"id": "notecraft.nestedTasksCountForeground",
-			"defaults": {
-				"light": "#000000",
-				"dark": "#000000",
-				"highContrast": "#000000"
-			},
-			"description": "Nested tasks counter editor decoration foreground."
-		},
-		{
-			"id": "notecraft.nestedTasksCountBorder",
-			"defaults": {
-				"light": "#dfd987bd",
-				"dark": "#fff0",
-				"highContrast": "#fff0"
-			},
-			"description": "Nested tasks counter editor decoration border."
-		},
-		{
-			"id": "notecraft.treeViewCompletedTaskIcon",
-			"defaults": {
-				"light": "#7cc54b",
-				"dark": "#7cc54b",
-				"highContrast": "#7cc54b"
-			},
-			"description": "Color of completed task icon in Tree View."
-		}
-	],
-	"menus": {
-		"view/title": [
-			{
-				"command": "notecraft.applyFilterToTreeView",
-				"when": "view == notecraft.tasks && !notecraft:filterActive",
-				"group": "navigation"
-			},
-			{
-				"command": "notecraft.clearTreeViewFilter",
-				"when": "view == notecraft.tasks && notecraft:filterActive",
-				"group": "navigation"
-			},
-			{
-				"command": "notecraft.addTaskToActiveFile",
-				"when": "view =~ /notecraft.(tasks)/",
-				"group": "navigation"
-			},
-			{
-				"command": "notecraft.addTaskToActiveFileWebview",
-				"when": "view =~ /notecraft.(webviewTasks)/",
-				"group": "navigation"
-			},
-			{
-				"command": "notecraft.openDefaultFile",
-				"when": "view == notecraft.tasks",
-				"group": "navigation"
-			},
-			{
-				"command": "notecraft.showWebviewSettings",
-				"when": "view == notecraft.webviewTasks",
-				"group": "navigation@8"
-			},
-			{
-				"command": "notecraft.webview.pickSort",
-				"when": "view == notecraft.webviewTasks",
-				"group": "navigation@7"
-			},
-			{
-				"command": "notecraft.webview.toggleShowRecurringUpcoming",
-				"when": "view == notecraft.webviewTasks",
-				"group": "navigation@6"
-			},
-			{
-				"command": "notecraft.collapseAllNestedTasks",
-				"alt": "notecraft.expandAllTasks",
-				"when": "view == notecraft.webviewTasks",
-				"group": "navigation@9"
-			},
-			{
-				"command": "notecraft.toggleTagsTreeViewSorting",
-				"when": "view == notecraft.tags",
-				"group": "navigation@9"
-			},
-			{
-				"command": "notecraft.toggleProjectsTreeViewSorting",
-				"when": "view == notecraft.projects",
-				"group": "navigation@9"
-			},
-			{
-				"command": "notecraft.toggleContextsTreeViewSorting",
-				"when": "view == notecraft.contexts",
-				"group": "navigation@9"
-			}
-		],
-		"view/item/context": [
-			{
-				"command": "notecraft.startTask",
-				"when": "view =~ /notecraft.(tasks|due|projects|tags|contexts|generic1|generic2|generic3)/ && viewItem =~ /(task|taskWithLink)/",
-				"group": "1_0"
-			},
-			{
-				"command": "notecraft.toggleFavorite",
-				"when": "view =~ /notecraft.(tasks|due|projects|tags|contexts|generic1|generic2|generic3)/ && viewItem =~ /(task|taskWithLink)/",
-				"group": "2_0"
-			},
-			{
-				"command": "notecraft.followLink",
-				"when": "view =~ /notecraft.(tasks|due|projects|tags|contexts|generic1|generic2|generic3)/ && viewItem == taskWithLink",
-				"group": "3_0"
-			},
-			{
-				"command": "notecraft.hideTask",
-				"when": "view =~ /notecraft.(tasks|due|projects|tags|contexts|generic1|generic2|generic3)/ && viewItem =~ /(task|taskWithLink)/",
-				"group": "4_0"
-			},
-			{
-				"command": "notecraft.deleteTask",
-				"when": "view =~ /notecraft.(tasks|due|projects|tags|contexts|generic1|generic2|generic3)/ && viewItem =~ /(task|taskWithLink)/",
-				"group": "7_0"
-			},
-			{
-				"command": "notecraft.toggleDone",
-				"when": "view =~ /notecraft.(tasks|due|projects|tags|contexts|generic1|generic2|generic3)/ && viewItem =~ /(task|taskWithLink)/ && !config.notecraft.treeView.useVscodeCheckboxApi",
-				"group": "inline"
-			}
-		],
-		"notecraft.contextMenu": [
-			{
-				"submenu": "notecraft.sortMenu",
-				"group": "0@0"
-			},
-			{
-				"command": "notecraft.setDueDate",
-				"group": "1@0"
-			},
-			{
-				"command": "notecraft.startTask",
-				"group": "2@0"
-			},
-			{
-				"command": "notecraft.incrementPriority",
-				"group": "3@0"
-			},
-			{
-				"command": "notecraft.decrementPriority",
-				"group": "3@1"
-			}
-		],
-		"notecraft.sortMenu": [
-			{
-				"command": "notecraft.sortByDefault",
-				"group": "0@0"
-			},
-			{
-				"command": "notecraft.sortByPriority",
-				"group": "0@1"
-			},
-			{
-				"command": "notecraft.sortByProject",
-				"group": "0@2"
-			},
-			{
-				"command": "notecraft.sortByTag",
-				"group": "0@3"
-			},
-			{
-				"command": "notecraft.sortByContext",
-				"group": "0@4"
-			},
-			{
-				"command": "notecraft.sortByDueDate",
-				"group": "0@5"
-			},
-			{
-				"command": "notecraft.sortByCompletionDate",
-				"group": "0@6"
-			},
-			{
-				"command": "notecraft.sortByCreationDate",
-				"group": "0@7"
-			}
-		],
-		"editor/context": [
-			{
-				"submenu": "notecraft.contextMenu",
-				"group": "navigation",
-				"when": "notecraft:isActive"
-			}
-		],
-		"commandPalette": [
-			{
-				"command": "notecraft.followLink",
-				"when": "false"
-			},
-			{
-				"command": "notecraft.hideTask",
-				"when": "false"
-			},
-			{
-				"command": "notecraft.deleteTask",
-				"when": "false"
-			},
-			{
-				"command": "notecraft.toggleTagsTreeViewSorting",
-				"when": "false"
-			},
-			{
-				"command": "notecraft.toggleProjectsTreeViewSorting",
-				"when": "false"
-			},
-			{
-				"command": "notecraft.toggleContextsTreeViewSorting",
-				"when": "false"
-			},
-			{
-				"command": "notecraft.focusTasksWebviewAndInput",
-				"when": "false"
-			},
-			{
-				"command": "notecraft.addTaskToActiveFileWebview",
-				"when": "false"
-			},
-			{
-				"command": "notecraft.setDueDate",
-				"when": "notecraft:isActive"
-			},
-			{
-				"command": "notecraft.setDate",
-				"when": "notecraft:isActive"
-			},
-			{
-				"command": "notecraft.toggleDone",
-				"when": "notecraft:isActive"
-			},
-			{
-				"command": "notecraft.sortByDefault",
-				"when": "notecraft:isActive"
-			},
-			{
-				"command": "notecraft.sortByPriority",
-				"when": "notecraft:isActive"
-			},
-			{
-				"command": "notecraft.sortByProject",
-				"when": "notecraft:isActive"
-			},
-			{
-				"command": "notecraft.sortByTag",
-				"when": "notecraft:isActive"
-			},
-			{
-				"command": "notecraft.sortByContext",
-				"when": "notecraft:isActive"
-			},
-			{
-				"command": "notecraft.sortByCreationDate",
-				"when": "notecraft:isActive"
-			},
-			{
-				"command": "notecraft.sortByDueDate",
-				"when": "notecraft:isActive"
-			},
-			{
-				"command": "notecraft.sortByCompletionDate",
-				"when": "notecraft:isActive"
-			},
-			{
-				"command": "notecraft.archiveCompletedTasks",
-				"when": "notecraft:isActive"
-			},
-			{
-				"command": "notecraft.moveToSomeday",
-				"when": "notecraft:isActive"
-			},
-			{
-				"command": "notecraft.createSimilarTask",
-				"description": "Create similar task (same tags, projects, contexts).",
-				"when": "notecraft:isActive"
-			},
-			{
-				"command": "notecraft.startTask",
-				"when": "notecraft:isActive"
-			},
-			{
-				"command": "notecraft.toggleComment",
-				"when": "notecraft:isActive"
-			},
-			{
-				"command": "notecraft.dev.setLastVisit",
-				"when": "notecraft:isDev"
-			},
-			{
-				"command": "notecraft.dev.clearGlobalState",
-				"when": "notecraft:isDev"
-			},
-			{
-				"command": "notecraft.dev.showGlobalState",
-				"when": "notecraft:isDev"
-			},
-			{
-				"command": "notecraft.dev.removeAllOverdue",
-				"when": "notecraft:isDev"
-			}
-		]
-	},
-	"submenus": [
-		{
-			"id": "notecraft.contextMenu",
-			"label": "Todo MD"
-		},
-		{
-			"id": "notecraft.sortMenu",
-			"label": "Sort"
-		}
-	],
-	"viewsContainers": {
-		"activitybar": [
-			{
-				"id": "notecraft",
-				"icon": "$(checklist)",
-				"title": "notecraft"
-			}
-		]
-	},
-	"views": {
-		"notecraft": [
-			{
-				"type": "webview",
-				"id": "notecraft.webviewTasks",
-				"contextualTitle": "Tasks",
-				"name": "Webview",
-				"icon": "$(check)"
-			},
-			{
-				"id": "notecraft.tasks",
-				"name": "Tasks"
-			},
-			{
-				"id": "notecraft.tags",
-				"name": "Tags",
-				"visibility": "collapsed"
-			},
-			{
-				"id": "notecraft.projects",
-				"name": "Projects",
-				"visibility": "collapsed"
-			},
-			{
-				"id": "notecraft.contexts",
-				"name": "Contexts",
-				"visibility": "collapsed"
-			},
-			{
-				"id": "notecraft.archived",
-				"name": "Archived",
-				"visibility": "collapsed"
-			},
-			{
-				"id": "notecraft.due",
-				"name": "Due",
-				"visibility": "collapsed"
-			},
-			{
-				"id": "notecraft.generic1",
-				"name": "Generic1",
-				"when": "notecraft:generic1FilterExists"
-			},
-			{
-				"id": "notecraft.generic2",
-				"name": "Generic2",
-				"when": "notecraft:generic2FilterExists"
-			},
-			{
-				"id": "notecraft.generic3",
-				"name": "Generic3",
-				"when": "notecraft:generic3FilterExists"
-			}
-		]
-	},
-	"viewsWelcome": [
-		{
-			"view": "notecraft.archived",
-			"when": "notecraft:archivedFileNotSpecified",
-			"contents": "Archived file path not set.\n\n[Pick file to use as archived file](command:notecraft.specifyDefaultArchiveFile)"
-		}
-	]
-},
+    "configuration": {
+      "type": "object",
+      "title": "NoteCraft",
+      "properties": {
+        "notecraft.webview.showCompleted": {
+          "type": "boolean",
+          "markdownDescription": "Whether completed tasks are shown or not in the webview.",
+          "default": true
+        },
+        "notecraft.webview.completedStrikeThrough": {
+          "type": "boolean",
+          "markdownDescription": "Whether completed tasks should have a line drawn on them in the webview.",
+          "default": false
+        },
+        "notecraft.webview.showRecurringCompleted": {
+          "type": "boolean",
+          "markdownDescription": "Whether recurring completed tasks are shown or not in the webview.",
+          "default": true
+        },
+        "notecraft.webview.showRecurringUpcoming": {
+          "type": "boolean",
+          "markdownDescription": "Whether recurring upcoming (not due) tasks are shown or not in the webview.",
+          "default": true
+        },
+        "notecraft.webview.showPriority": {
+          "type": "boolean",
+          "markdownDescription": "Controls whether priority is shown in the webview.",
+          "default": true
+        },
+        "notecraft.webview.showCheckbox": {
+          "type": "boolean",
+          "markdownDescription": "Controls whether checkbox is shown in the webview.",
+          "default": true
+        },
+        "notecraft.webview.showNestedTaskCount": {
+          "type": "boolean",
+          "markdownDescription": "Controls whether nested tasks indicator (like `0/10`) is shown in the webview.",
+          "default": false
+        },
+        "notecraft.webview.showTaskDetails": {
+          "type": "boolean",
+          "markdownDescription": "When true - show box on the bottom of the webview that shows selected task details.",
+          "default": false
+        },
+        "notecraft.webview.notificationsEnabled": {
+          "type": "boolean",
+          "markdownDescription": "When true - show notification after some actions (like task completion) in a webview.",
+          "default": false
+        },
+        "notecraft.webview.fontSize": {
+          "type": "string",
+          "markdownDescription": "Controls font size in the webview. [CSS Units](https://developer.mozilla.org/en-US/docs/Web/CSS/font-size)",
+          "default": "15px"
+        },
+        "notecraft.webview.fontFamily": {
+          "type": "string",
+          "markdownDescription": "Controls font family in the webview. [CSS Units](https://developer.mozilla.org/en-US/docs/Web/CSS/font-family)",
+          "default": "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji'"
+        },
+        "notecraft.webview.lineHeight": {
+          "type": "number",
+          "markdownDescription": "Controls line height in the webview.",
+          "default": 1.4,
+          "minimum": 1,
+          "maximum": 3
+        },
+        "notecraft.webview.padding": {
+          "type": "string",
+          "markdownDescription": "Controls top & bottom padding. [CSS Units](https://developer.mozilla.org/en-US/docs/Web/CSS/padding)",
+          "default": "2px"
+        },
+        "notecraft.webview.indentSize": {
+          "type": "string",
+          "markdownDescription": "Controls visual indent of nested elements in a webview.",
+          "default": "1.8em"
+        },
+        "notecraft.webview.customCheckboxEnabled": {
+          "type": "boolean",
+          "markdownDescription": "Whether checkbox is rendered as native input element or a custom styled element.",
+          "default": true
+        },
+        "notecraft.webview.autoShowSuggest": {
+          "type": "boolean",
+          "markdownDescription": "Show autocomplete when typing. (When disabled suggest can be called by `Ctrl`+`Space`)",
+          "default": true
+        },
+        "notecraft.webview.focusFilterInputOnClick": {
+          "type": "boolean",
+          "markdownDescription": "Focus filter input after clicking(selecting) any task.",
+          "default": true
+        },
+        "notecraft.webview.customCSSPath": {
+          "type": "string",
+          "markdownDescription": "Absolute path to custom CSS for the webview.",
+          "default": ""
+        },
+        "notecraft.webview.tagStyles": {
+          "type": "object",
+          "markdownDescription": "Set different color for any tag in a webview.",
+          "default": {},
+          "patternProperties": {
+            ".+": {
+              "type": "object",
+              "properties": {
+                "color": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "backgroundColor": {
+                  "type": "string",
+                  "format": "color"
+                }
+              }
+            }
+          }
+        },
+        "notecraft.defaultFile": {
+          "type": "string",
+          "markdownDescription": "Absolute path to file that Tree Views or commands use when no editor is open that matches `#notecraft.activatePattern#`.\n\n[**Pick default file**](command:notecraft.specifyDefaultFile). Supports using `${workspaceFolder}` variable substitution.",
+          "default": ""
+        },
+        "notecraft.defaultArchiveFile": {
+          "type": "string",
+          "markdownDescription": "Absolute path to file that all archived tasks will be moved to.\n\n[**Pick archive file**](command:notecraft.specifyDefaultArchiveFile).  Supports using `${workspaceFolder}` variable substitution.",
+          "default": ""
+        },
+        "notecraft.defaultSomedayFile": {
+          "type": "string",
+          "markdownDescription": "Absolute path to file that is used as the \"someday\" file.\n\n[**Pick someday file**](command:notecraft.specifyDefaultSomedayFile)",
+          "default": ""
+        },
+        "notecraft.durationIncludeSeconds": {
+          "type": "boolean",
+          "markdownDescription": "When enabled - duration (editor, hover) includes seconds.",
+          "default": false
+        },
+        "notecraft.autoArchiveTasks": {
+          "type": "boolean",
+          "markdownDescription": "When enabled - will move tasks to archive file (on completion).",
+          "default": false
+        },
+        "notecraft.confirmTaskDelete": {
+          "type": "string",
+          "enum": [
+            "always",
+            "never",
+            "hasNestedTasks"
+          ],
+          "markdownDescription": "Show confirmation when deleting task from Tree View or Webview.",
+          "default": "always"
+        },
+        "notecraft.activatePattern": {
+          "type": "string",
+          "markdownDescription": "Choose files that extension will operate on. By default activated on 3 files (todo.md, someday.md & todo.archive.md). Uses [Glob](https://code.visualstudio.com/docs/editor/glob-patterns). Examples:\n\nActivate on any (.txt) file - `**/*.txt`.\n\nActivate only on single file (todo.txt) - `**/todo.txt`\n\nActivate on 2 files (todo.txt or task.txt) - `**/{todo,task}.txt`",
+          "default": "**/{todo,someday,todo.archive}.md"
+        },
+        "notecraft.getNextNumberOfTasks": {
+          "type": "integer",
+          "default": 5,
+          "minimum": 1,
+          "maximum": 15,
+          "markdownDescription": "Number of tasks returned by `getFewNextTasks` command."
+        },
+        "notecraft.sortTagsView": {
+          "type": "string",
+          "enum": [
+            "alphabetic",
+            "count"
+          ],
+          "default": "alphabetic",
+          "description": "Controls tags Tree View sorting."
+        },
+        "notecraft.sortProjectsView": {
+          "type": "string",
+          "enum": [
+            "alphabetic",
+            "count"
+          ],
+          "default": "alphabetic",
+          "description": "Controls projects Tree View sorting."
+        },
+        "notecraft.sortContextsView": {
+          "type": "string",
+          "enum": [
+            "alphabetic",
+            "count"
+          ],
+          "default": "alphabetic",
+          "description": "Controls contexts Tree View sorting."
+        },
+        "notecraft.sortNestedTasks": {
+          "type": "string",
+          "enum": [
+            "default",
+            "none"
+          ],
+          "enumDescriptions": [
+            "Default sorting (due)",
+            "No sorting"
+          ],
+          "default": "default",
+          "description": "Controls nested tasks sorting in Tree Views."
+        },
+        "notecraft.suggestItems": {
+          "type": "object",
+          "markdownDescription": "This extension will only autocomplete tags/projects/contexts located in **1** file. This setting allows you to add items and their description(markdown) to autocomplete in all files (where extension is active). Examples: `#tag`, `+project`, `@context`.",
+          "patternProperties": {
+            "^#": {
+              "type": "string",
+              "description": "Tag"
+            },
+            "^\\+": {
+              "type": "string",
+              "description": "Project"
+            },
+            "^@": {
+              "type": "string",
+              "description": "Context"
+            }
+          },
+          "additionalProperties": false,
+          "default": {}
+        },
+        "notecraft.counterBadgeEnabled": {
+          "type": "boolean",
+          "markdownDescription": "Shows small badge to show a number of times the tag/project/context is present in the active document.",
+          "default": false
+        },
+        "notecraft.progressChartEnabled": {
+          "type": "boolean",
+          "markdownDescription": "Controls whether editor nested task decoration (pie chart) is shown or not.",
+          "default": true
+        },
+        "notecraft.progressBackground": {
+          "type": "string",
+          "markdownDescription": "Editor decoration for nested tasks progress (pie chart) background.",
+          "format": "color",
+          "default": "#c6cdd3"
+        },
+        "notecraft.progressForeground": {
+          "type": "string",
+          "markdownDescription": "Editor decoration for nested tasks progress (pie chart) foreground.",
+          "format": "color",
+          "default": "#0077AA"
+        },
+        "notecraft.statusBarMainEnabled": {
+          "type": "boolean",
+          "markdownDescription": "Controls visibility of status bar that shows next tasks to complete.",
+          "markdownDeprecationMessage": "Deprecated in favor of `#notecraft.mainStatusBarItem#` setting.",
+          "default": false
+        },
+        "notecraft.mainStatusBarItem": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "markdownDescription": "Controls visibility of this status bar item.",
+              "default": false
+            },
+            "hoverEnabled": {
+              "type": "boolean",
+              "markdownDescription": "Controls whether or not to show hover for this status bar item",
+              "default": true
+            },
+            "alignment": {
+              "type": "string",
+              "default": "left",
+              "enum": [
+                "left",
+                "right"
+              ]
+            },
+            "priority": {
+              "type": "integer",
+              "default": -20001
+            },
+            "truncate": {
+              "type": "integer",
+              "markdownDescription": "If the message length is longer - crop it at the end. `0` to disable.",
+              "minimum": 0,
+              "default": 0
+            },
+            "onClick": {
+              "type": "string",
+              "enum": [
+                "completeTask",
+                "revealTask",
+                "nothing"
+              ],
+              "default": "completeTask",
+              "markdownDescription": "Controls visibility of status bar that shows next tasks to complete."
+            },
+            "targetTasks": {
+              "type": "string",
+              "enum": [
+                "all",
+                "due"
+              ],
+              "default": "all"
+            },
+            "highlightOverdue": {
+              "type": "string",
+              "enum": [
+                "none",
+                "errorBg",
+                "errorFg",
+                "warningBg",
+                "warningFg"
+              ],
+              "default": "none"
+            },
+            "highlightDue": {
+              "type": "string",
+              "enum": [
+                "none",
+                "errorBg",
+                "errorFg",
+                "warningBg",
+                "warningFg"
+              ],
+              "default": "none"
+            }
+          },
+          "default": {
+            "enabled": false,
+            "hoverEnabled": true,
+            "alignment": "left",
+            "priority": -20001,
+            "truncate": 0,
+            "onClick": "completeTask",
+            "targetTasks": "all",
+            "highlightOverdue": "none",
+            "highlightDue": "none"
+          },
+          "additionalProperties": false,
+          "markdownDescription": "Configure appearance/behavior of main status bar item (shows next task to complete)."
+        },
+        "notecraft.progressStatusBarItem": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "markdownDescription": "Controls visibility of this status bar item.",
+              "default": false
+            },
+            "alignment": {
+              "type": "string",
+              "default": "left",
+              "enum": [
+                "left",
+                "right"
+              ]
+            },
+            "priority": {
+              "type": "integer",
+              "default": -20000
+            }
+          },
+          "default": {
+            "enabled": false,
+            "alignment": "left",
+            "priority": -20000
+          },
+          "additionalProperties": false,
+          "markdownDescription": "Configure appearance/behavior of the progress status bar item (shows only when active text editor matches `#notecraft.activatePattern#`) with text format: `1/3 33%`."
+        },
+        "notecraft.addCreationDate": {
+          "type": "boolean",
+          "markdownDescription": "When creating a task add creation date to it: `{cr:2020-04-30}`",
+          "default": false
+        },
+        "notecraft.completionDateIncludeDate": {
+          "type": "boolean",
+          "markdownDescription": "Whether to include date when completing a task: `{cm}` vs `{cm:2020-04-30}`",
+          "default": true
+        },
+        "notecraft.completionDateIncludeTime": {
+          "type": "boolean",
+          "markdownDescription": "When completing a task add date and time: `{cm:2020-04-30T09:11:17}`",
+          "default": false
+        },
+        "notecraft.creationDateIncludeTime": {
+          "type": "boolean",
+          "markdownDescription": "When creating a task add date and time: `{cr:2020-04-30T09:11:17}`",
+          "default": false
+        },
+        "notecraft.closestDueDateIncludeWeekday": {
+          "type": "boolean",
+          "markdownDescription": "When enabled - editor decoration that shows number of days to the due date adds the weekday name.",
+          "default": false
+        },
+        "notecraft.autoBumpRecurringOverdueDate": {
+          "type": "boolean",
+          "markdownDescription": "When completing overdue recurring task - replace the starting date with today's date.",
+          "default": false
+        },
+        "notecraft.isDev": {
+          "type": "boolean",
+          "markdownDescription": "For emulating dev mode. Most likely of no use to anyone, except the extension author.",
+          "default": false
+        },
+        "notecraft.tabSize": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 8,
+          "markdownDescription": "Number used for parsing nested tasks when indentation cannot be guessed (file is not opened in editor).",
+          "default": 4
+        },
+        "notecraft.savedFilters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "filter": {
+                "type": "string"
+              }
+            }
+          },
+          "markdownDescription": "Filters that you can pick when applying a filter.",
+          "default": []
+        },
+        "notecraft.treeViews": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "filter",
+              "title"
+            ],
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "filter": {
+                "type": "string"
+              }
+            }
+          },
+          "maxLength": 3,
+          "markdownDescription": "Add more tree views with predefined filters.",
+          "default": []
+        },
+        "notecraft.treeView.showBadge": {
+          "type": "boolean",
+          "markdownDescription": "Whether or not to show due tasks counter badge for tree view container.",
+          "default": true
+        },
+        "notecraft.treeView.useVscodeCheckboxApi": {
+          "type": "boolean",
+          "markdownDescription": "When checked - will use vscode api to show checkboxes https://github.com/microsoft/vscode/issues/116141.",
+          "default": true
+        },
+        "notecraft.labelDueSymbol": {
+          "type": "string",
+          "markdownDescription": "Prefix for task that is due in labels (tree view, notification, modal, quick pick).",
+          "default": "📗 "
+        },
+        "notecraft.labelNotDueSymbol": {
+          "type": "string",
+          "markdownDescription": "Prefix for task that that is not due in labels (tree view, notification, modal, quick pick).",
+          "default": "📅 "
+        },
+        "notecraft.labelOverdueSymbol": {
+          "type": "string",
+          "markdownDescription": "Prefix for task that is overdue in labels (tree view, notification, modal, quick pick).",
+          "default": "📕 "
+        },
+        "notecraft.labelInvalidDueSymbol": {
+          "type": "string",
+          "markdownDescription": "Prefix for task that has invalid due date in labels (tree view, notification, modal, quick pick).",
+          "default": "🟣 "
+        },
+        "notecraft.labelFavorite": {
+          "type": "string",
+          "markdownDescription": "Label shown when task has favorite `{f}` special tag. (tree view, notification, modal, quick pick)",
+          "default": " ❤️ "
+        },
+        "notecraft.labelShowItems": {
+          "type": "boolean",
+          "markdownDescription": "Show projects/tags/contexts in labels (tree view, notification, modal, quick pick).",
+          "default": true
+        },
+        "notecraft.useBoldTextInLabels": {
+          "type": "boolean",
+          "markdownDescription": "Show projects/tags/contexts in labels in **BOLD**.",
+          "default": true
+        },
+        "notecraft.completedStrikeThrough": {
+          "type": "boolean",
+          "markdownDescription": "Show strike-through text decoration for completed tasks in editor.",
+          "default": true
+        },
+        "notecraft.setDueDateThisWeekDay": {
+          "type": "string",
+          "markdownDescription": "Week day when using set due date command or suggest `SET_DUE_THIS_WEEK`.",
+          "enum": [
+            "Friday",
+            "Sunday"
+          ],
+          "default": "Friday"
+        },
+        "notecraft.setDueDateNextWeekDay": {
+          "type": "string",
+          "markdownDescription": "Week day when using set due date command or suggest `SET_DUE_NEXT_WEEK`.",
+          "enum": [
+            "Monday",
+            "Friday",
+            "Sunday"
+          ],
+          "default": "Friday"
+        },
+        "notecraft.commentFormat": {
+          "type": "object",
+          "properties": {
+            "start": {
+              "type": "string",
+              "minLength": 1,
+              "default": "# "
+            },
+            "end": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          "additionalProperties": false,
+          "markdownDescription": "Choose comment symbols (only works at the beginning of the line).",
+          "default": {
+            "start": "# ",
+            "end": ""
+          }
+        },
+        "notecraft.decorations": {
+          "type": "object",
+          "markdownDescription": "Advanced text editor decoration tweaking. [docs](https://github.com/usernamehw/vscode-todo-md/blob/master/docs/docs.md#advanced-editor-decorations)",
+          "default": {
+            "project": {},
+            "context": {},
+            "tag": {},
+            "comment": {},
+            "notDue": {},
+            "due": {},
+            "overdue": {},
+            "invalidDue": {},
+            "favorite": {},
+            "priorityA": {},
+            "priorityB": {},
+            "priorityC": {},
+            "priorityD": {},
+            "priorityE": {},
+            "priorityF": {},
+            "completedTask": {}
+          },
+          "patternProperties": {
+            "^(project|context|tag|comment|notDue|due|overdue|invalidDue|favorite|priorityA|priorityB|priorityC|priorityD|priorityE|priorityF|completedTask|(#|\\+|@)\\S+)$": {
+              "type": "object",
+              "properties": {
+                "isWholeLine": {
+                  "description": "Should the decoration be rendered also on the whitespace after the line text.\nDefaults to `false`.",
+                  "type": "boolean"
+                },
+                "rangeBehavior": {
+                  "description": "Customize the growing behavior of the decoration when edits occur at the edges of the decoration's range.\nDefaults to `DecorationRangeBehavior.OpenOpen`.",
+                  "enum": [
+                    0,
+                    1,
+                    2,
+                    3
+                  ],
+                  "type": "number",
+                  "enumDescriptions": [
+                    "OpenOpen",
+                    "ClosedClosed",
+                    "OpenClosed",
+                    "ClosedOpen"
+                  ]
+                },
+                "overviewRulerLane": {
+                  "enum": [
+                    1,
+                    2,
+                    4,
+                    7
+                  ],
+                  "type": "number",
+                  "enumDescriptions": [
+                    "Left",
+                    "Center",
+                    "Right",
+                    "Full"
+                  ]
+                },
+                "light": {
+                  "description": "Represents theme specific rendering styles for a [text editor decoration](#TextEditorDecorationType).",
+                  "type": "object",
+                  "properties": {
+                    "backgroundColor": {
+                      "format": "color",
+                      "type": "string"
+                    },
+                    "outline": {
+                      "type": "string"
+                    },
+                    "outlineColor": {
+                      "format": "color",
+                      "type": "string"
+                    },
+                    "outlineStyle": {
+                      "type": "string"
+                    },
+                    "outlineWidth": {
+                      "type": "string"
+                    },
+                    "border": {
+                      "type": "string"
+                    },
+                    "borderColor": {
+                      "format": "color",
+                      "type": "string"
+                    },
+                    "borderRadius": {
+                      "type": "string"
+                    },
+                    "borderSpacing": {
+                      "type": "string"
+                    },
+                    "borderStyle": {
+                      "type": "string"
+                    },
+                    "borderWidth": {
+                      "type": "string"
+                    },
+                    "fontStyle": {
+                      "type": "string"
+                    },
+                    "fontWeight": {
+                      "type": "string"
+                    },
+                    "textDecoration": {
+                      "type": "string"
+                    },
+                    "cursor": {
+                      "type": "string"
+                    },
+                    "color": {
+                      "format": "color",
+                      "type": "string"
+                    },
+                    "opacity": {
+                      "type": "string"
+                    },
+                    "letterSpacing": {
+                      "type": "string"
+                    },
+                    "gutterIconPath": {
+                      "description": "An **absolute path** or an URI to an image to be rendered in the gutter.",
+                      "type": "string"
+                    },
+                    "gutterIconSize": {
+                      "description": "Specifies the size of the gutter icon.\nAvailable values are 'auto', 'contain', 'cover' and any percentage value.\nFor further information: https://msdn.microsoft.com/en-us/library/jj127316(v=vs.85).aspx",
+                      "type": "string"
+                    },
+                    "overviewRulerColor": {
+                      "format": "color",
+                      "type": "string"
+                    },
+                    "before": {
+                      "description": "Defines the rendering options of the attachment that is inserted before the decorated text.",
+                      "type": "object",
+                      "properties": {
+                        "contentText": {
+                          "description": "Defines a text content that is shown in the attachment. Either an icon or a text can be shown, but not both.",
+                          "type": "string"
+                        },
+                        "contentIconPath": {
+                          "description": "An **absolute path** or an URI to an image to be rendered in the attachment. Either an icon\nor a text can be shown, but not both.",
+                          "type": "string"
+                        },
+                        "border": {
+                          "type": "string"
+                        },
+                        "borderColor": {
+                          "format": "color",
+                          "type": "string"
+                        },
+                        "fontStyle": {
+                          "type": "string"
+                        },
+                        "fontWeight": {
+                          "type": "string"
+                        },
+                        "textDecoration": {
+                          "type": "string"
+                        },
+                        "color": {
+                          "format": "color",
+                          "type": "string"
+                        },
+                        "backgroundColor": {
+                          "format": "color",
+                          "type": "string"
+                        },
+                        "margin": {
+                          "type": "string"
+                        },
+                        "width": {
+                          "type": "string"
+                        },
+                        "height": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "after": {
+                      "description": "Defines the rendering options of the attachment that is inserted after the decorated text.",
+                      "type": "object",
+                      "properties": {
+                        "contentText": {
+                          "description": "Defines a text content that is shown in the attachment. Either an icon or a text can be shown, but not both.",
+                          "type": "string"
+                        },
+                        "contentIconPath": {
+                          "description": "An **absolute path** or an URI to an image to be rendered in the attachment. Either an icon\nor a text can be shown, but not both.",
+                          "type": "string"
+                        },
+                        "border": {
+                          "type": "string"
+                        },
+                        "borderColor": {
+                          "format": "color",
+                          "type": "string"
+                        },
+                        "fontStyle": {
+                          "type": "string"
+                        },
+                        "fontWeight": {
+                          "type": "string"
+                        },
+                        "textDecoration": {
+                          "type": "string"
+                        },
+                        "color": {
+                          "format": "color",
+                          "type": "string"
+                        },
+                        "backgroundColor": {
+                          "format": "color",
+                          "type": "string"
+                        },
+                        "margin": {
+                          "type": "string"
+                        },
+                        "width": {
+                          "type": "string"
+                        },
+                        "height": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "dark": {
+                  "description": "Represents theme specific rendering styles for a [text editor decoration](#TextEditorDecorationType).",
+                  "type": "object",
+                  "properties": {
+                    "backgroundColor": {
+                      "format": "color",
+                      "type": "string"
+                    },
+                    "outline": {
+                      "type": "string"
+                    },
+                    "outlineColor": {
+                      "format": "color",
+                      "type": "string"
+                    },
+                    "outlineStyle": {
+                      "type": "string"
+                    },
+                    "outlineWidth": {
+                      "type": "string"
+                    },
+                    "border": {
+                      "type": "string"
+                    },
+                    "borderColor": {
+                      "format": "color",
+                      "type": "string"
+                    },
+                    "borderRadius": {
+                      "type": "string"
+                    },
+                    "borderSpacing": {
+                      "type": "string"
+                    },
+                    "borderStyle": {
+                      "type": "string"
+                    },
+                    "borderWidth": {
+                      "type": "string"
+                    },
+                    "fontStyle": {
+                      "type": "string"
+                    },
+                    "fontWeight": {
+                      "type": "string"
+                    },
+                    "textDecoration": {
+                      "type": "string"
+                    },
+                    "cursor": {
+                      "type": "string"
+                    },
+                    "color": {
+                      "format": "color",
+                      "type": "string"
+                    },
+                    "opacity": {
+                      "type": "string"
+                    },
+                    "letterSpacing": {
+                      "type": "string"
+                    },
+                    "gutterIconPath": {
+                      "description": "An **absolute path** or an URI to an image to be rendered in the gutter.",
+                      "type": "string"
+                    },
+                    "gutterIconSize": {
+                      "description": "Specifies the size of the gutter icon.\nAvailable values are 'auto', 'contain', 'cover' and any percentage value.\nFor further information: https://msdn.microsoft.com/en-us/library/jj127316(v=vs.85).aspx",
+                      "type": "string"
+                    },
+                    "overviewRulerColor": {
+                      "format": "color",
+                      "type": "string"
+                    },
+                    "before": {
+                      "description": "Defines the rendering options of the attachment that is inserted before the decorated text.",
+                      "type": "object",
+                      "properties": {
+                        "contentText": {
+                          "description": "Defines a text content that is shown in the attachment. Either an icon or a text can be shown, but not both.",
+                          "type": "string"
+                        },
+                        "contentIconPath": {
+                          "description": "An **absolute path** or an URI to an image to be rendered in the attachment. Either an icon\nor a text can be shown, but not both.",
+                          "type": "string"
+                        },
+                        "border": {
+                          "type": "string"
+                        },
+                        "borderColor": {
+                          "format": "color",
+                          "type": "string"
+                        },
+                        "fontStyle": {
+                          "type": "string"
+                        },
+                        "fontWeight": {
+                          "type": "string"
+                        },
+                        "textDecoration": {
+                          "type": "string"
+                        },
+                        "color": {
+                          "format": "color",
+                          "type": "string"
+                        },
+                        "backgroundColor": {
+                          "format": "color",
+                          "type": "string"
+                        },
+                        "margin": {
+                          "type": "string"
+                        },
+                        "width": {
+                          "type": "string"
+                        },
+                        "height": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "after": {
+                      "description": "Defines the rendering options of the attachment that is inserted after the decorated text.",
+                      "type": "object",
+                      "properties": {
+                        "contentText": {
+                          "description": "Defines a text content that is shown in the attachment. Either an icon or a text can be shown, but not both.",
+                          "type": "string"
+                        },
+                        "contentIconPath": {
+                          "description": "An **absolute path** or an URI to an image to be rendered in the attachment. Either an icon\nor a text can be shown, but not both.",
+                          "type": "string"
+                        },
+                        "border": {
+                          "type": "string"
+                        },
+                        "borderColor": {
+                          "format": "color",
+                          "type": "string"
+                        },
+                        "fontStyle": {
+                          "type": "string"
+                        },
+                        "fontWeight": {
+                          "type": "string"
+                        },
+                        "textDecoration": {
+                          "type": "string"
+                        },
+                        "color": {
+                          "format": "color",
+                          "type": "string"
+                        },
+                        "backgroundColor": {
+                          "format": "color",
+                          "type": "string"
+                        },
+                        "margin": {
+                          "type": "string"
+                        },
+                        "width": {
+                          "type": "string"
+                        },
+                        "height": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "backgroundColor": {
+                  "format": "color",
+                  "type": "string"
+                },
+                "outline": {
+                  "type": "string"
+                },
+                "outlineColor": {
+                  "format": "color",
+                  "type": "string"
+                },
+                "outlineStyle": {
+                  "type": "string"
+                },
+                "outlineWidth": {
+                  "type": "string"
+                },
+                "border": {
+                  "type": "string"
+                },
+                "borderColor": {
+                  "format": "color",
+                  "type": "string"
+                },
+                "borderRadius": {
+                  "type": "string"
+                },
+                "borderSpacing": {
+                  "type": "string"
+                },
+                "borderStyle": {
+                  "type": "string"
+                },
+                "borderWidth": {
+                  "type": "string"
+                },
+                "fontStyle": {
+                  "type": "string"
+                },
+                "fontWeight": {
+                  "type": "string"
+                },
+                "textDecoration": {
+                  "type": "string"
+                },
+                "cursor": {
+                  "type": "string"
+                },
+                "color": {
+                  "format": "color",
+                  "type": "string"
+                },
+                "opacity": {
+                  "type": "string"
+                },
+                "letterSpacing": {
+                  "type": "string"
+                },
+                "gutterIconPath": {
+                  "description": "An **absolute path** or an URI to an image to be rendered in the gutter.",
+                  "type": "string"
+                },
+                "gutterIconSize": {
+                  "description": "Specifies the size of the gutter icon.\nAvailable values are 'auto', 'contain', 'cover' and any percentage value.\nFor further information: https://msdn.microsoft.com/en-us/library/jj127316(v=vs.85).aspx",
+                  "type": "string"
+                },
+                "overviewRulerColor": {
+                  "format": "color",
+                  "type": "string"
+                },
+                "before": {
+                  "description": "Defines the rendering options of the attachment that is inserted before the decorated text.",
+                  "type": "object",
+                  "properties": {
+                    "contentText": {
+                      "description": "Defines a text content that is shown in the attachment. Either an icon or a text can be shown, but not both.",
+                      "type": "string"
+                    },
+                    "contentIconPath": {
+                      "description": "An **absolute path** or an URI to an image to be rendered in the attachment. Either an icon\nor a text can be shown, but not both.",
+                      "type": "string"
+                    },
+                    "border": {
+                      "type": "string"
+                    },
+                    "borderColor": {
+                      "format": "color",
+                      "type": "string"
+                    },
+                    "fontStyle": {
+                      "type": "string"
+                    },
+                    "fontWeight": {
+                      "type": "string"
+                    },
+                    "textDecoration": {
+                      "type": "string"
+                    },
+                    "color": {
+                      "format": "color",
+                      "type": "string"
+                    },
+                    "backgroundColor": {
+                      "format": "color",
+                      "type": "string"
+                    },
+                    "margin": {
+                      "type": "string"
+                    },
+                    "width": {
+                      "type": "string"
+                    },
+                    "height": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "after": {
+                  "description": "Defines the rendering options of the attachment that is inserted after the decorated text.",
+                  "type": "object",
+                  "properties": {
+                    "contentText": {
+                      "description": "Defines a text content that is shown in the attachment. Either an icon or a text can be shown, but not both.",
+                      "type": "string"
+                    },
+                    "contentIconPath": {
+                      "description": "An **absolute path** or an URI to an image to be rendered in the attachment. Either an icon\nor a text can be shown, but not both.",
+                      "type": "string"
+                    },
+                    "border": {
+                      "type": "string"
+                    },
+                    "borderColor": {
+                      "format": "color",
+                      "type": "string"
+                    },
+                    "fontStyle": {
+                      "type": "string"
+                    },
+                    "fontWeight": {
+                      "type": "string"
+                    },
+                    "textDecoration": {
+                      "type": "string"
+                    },
+                    "color": {
+                      "format": "color",
+                      "type": "string"
+                    },
+                    "backgroundColor": {
+                      "format": "color",
+                      "type": "string"
+                    },
+                    "margin": {
+                      "type": "string"
+                    },
+                    "width": {
+                      "type": "string"
+                    },
+                    "height": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "notecraft.toggleComment",
+        "title": "Toggle Comment",
+        "description": "Toggle comment. <kbd>Ctrl/Cmd</kbd>+<kbd>/</kbd> (Only when in todo.md file)",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.toggleTagsTreeViewSorting",
+        "title": "Toggle Tags Tree View Sorting",
+        "category": "Note Craft",
+        "icon": "$(ungroup-by-ref-type)"
+      },
+      {
+        "command": "notecraft.toggleProjectsTreeViewSorting",
+        "title": "Toggle Projects Tree View Sorting",
+        "category": "Note Craft",
+        "icon": "$(ungroup-by-ref-type)"
+      },
+      {
+        "command": "notecraft.toggleContextsTreeViewSorting",
+        "title": "Toggle Contexts Tree View Sorting",
+        "category": "Note Craft",
+        "icon": "$(ungroup-by-ref-type)"
+      },
+      {
+        "command": "notecraft.showWebviewSettings",
+        "title": "Show Webview Settings",
+        "category": "Note Craft",
+        "icon": "$(settings-gear)"
+      },
+      {
+        "command": "notecraft.webview.pickSort",
+        "title": "Sort",
+        "icon": "$(sort-precedence)"
+      },
+      {
+        "command": "notecraft.webview.toggleShowRecurringUpcoming",
+        "title": "Toggle setting to show recurring upcoming tasks in webview.",
+        "category": "Note Craft",
+        "icon": "$(milestone)"
+      },
+      {
+        "command": "notecraft.focusTasksWebviewAndInput",
+        "title": "Focus Tasks Webview and its filter input",
+        "description": "Supports arguments {\"selectInputText\": boolean, \"fillInputValue\": string}",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.collapseAllNestedTasks",
+        "title": "Collapse all nested tasks.",
+        "category": "Note Craft",
+        "icon": "$(collapse-all)"
+      },
+      {
+        "command": "notecraft.expandAllTasks",
+        "title": "Expand all tasks.",
+        "category": "Note Craft",
+        "icon": "$(expand-all)"
+      },
+      {
+        "command": "notecraft.incrementPriority",
+        "title": "Increment priority",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.decrementPriority",
+        "title": "Decrement priority",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.toggleDone",
+        "title": "Toggle completion",
+        "description": "<kbd>Alt</kbd>+<kbd>D</kbd> - Toggle Done (Completion)",
+        "category": "Note Craft",
+        "icon": "$(check)"
+      },
+      {
+        "command": "notecraft.hideTask",
+        "title": "Hide the Task",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.deleteTask",
+        "title": "Delete the Task",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.addTaskToDefaultFile",
+        "title": "Add a Task to DEFAULT file",
+        "category": "Note Craft",
+        "icon": "$(add)"
+      },
+      {
+        "command": "notecraft.addTaskToActiveFile",
+        "title": "Add a Task to ACTIVE file",
+        "category": "Note Craft",
+        "icon": "$(add)"
+      },
+      {
+        "command": "notecraft.addTaskToActiveFileWebview",
+        "title": "Add a Task to ACTIVE file",
+        "category": "Note Craft",
+        "icon": "$(add)"
+      },
+      {
+        "command": "notecraft.sortByDefault",
+        "title": "Sort by Due Date & Priority (default sort)",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.sortByPriority",
+        "title": "Sort by Priority",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.sortByProject",
+        "title": "Sort by Project",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.sortByTag",
+        "title": "Sort by Tag",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.sortByContext",
+        "title": "Sort by Context",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.sortByCreationDate",
+        "title": "Sort by Creation Date",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.sortByDueDate",
+        "title": "Sort by Due Date",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.sortByCompletionDate",
+        "title": "Sort by Completion Date",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.setDueDate",
+        "description": "Helper command to set due date relative to now. [Docs](https://github.com/usernamehw/vscode-todo-md/blob/master/docs/docs.md#set-due-date-helper-function-notecraftsetduedate)",
+        "title": "Set due date",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.setDate",
+        "title": "Set date",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.archiveCompletedTasks",
+        "title": "Move completed tasks to Archive file",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.startTask",
+        "description": "Start task (when completed adds `{duration}` special tag)",
+        "title": "Start",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.toggleFavorite",
+        "description": "Toggle Favorite (`{f}` special tag).",
+        "title": "Toggle Favorite",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.openDefaultFile",
+        "title": "Open default file",
+        "category": "Note Craft",
+        "icon": "$(go-to-file)"
+      },
+      {
+        "command": "notecraft.openDefaultArchiveFile",
+        "title": "Open default Archive file",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.openSomedayFile",
+        "title": "Open Someday file",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.createSimilarTask",
+        "title": "Create similar task (same tags, projects, contexts).",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.completeTask",
+        "title": "Complete a Task",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.getNextTask",
+        "description": "Get due task from main file. If none are due - get one with the highest priority.",
+        "title": "Get 1 next task",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.getFewNextTasks",
+        "description": "Get several tasks. Due tasks are on top.",
+        "title": "Get a few next tasks.",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.getRandomTask",
+        "title": "Get random task",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.applyFilterToTreeView",
+        "title": "Apply Filter",
+        "category": "Note Craft",
+        "icon": "$(filter)"
+      },
+      {
+        "command": "notecraft.clearTreeViewFilter",
+        "title": "Clear Filter",
+        "category": "Note Craft",
+        "icon": "$(clear-all)"
+      },
+      {
+        "command": "notecraft.resetAllRecurringTasks",
+        "title": "Reset all Recurring tasks",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.followLink",
+        "title": "Follow link",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.removeOverdue",
+        "title": "Remove overdue",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.moveToSomeday",
+        "title": "Move to Someday file",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.dev.clearGlobalState",
+        "title": "DEV: Clear global state",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.dev.setLastVisit",
+        "title": "DEV: Set last visit",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.dev.showGlobalState",
+        "title": "DEV: Show Global State",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.dev.removeAllOverdue",
+        "title": "DEV: Remove all overdue tags.",
+        "category": "Note Craft"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "notecraft.toggleDone",
+        "key": "alt+D",
+        "when": "editorTextFocus && notecraft:isActive"
+      },
+      {
+        "command": "notecraft.toggleComment",
+        "key": "ctrl+/",
+        "mac": "cmd+/",
+        "when": "editorTextFocus && notecraft:isActive"
+      }
+    ],
+    "colors": [
+      {
+        "id": "notecraft.favoriteTaskBackground",
+        "defaults": {
+          "light": "#f62caf18",
+          "dark": "#f62caf18",
+          "highContrast": "#f62caf18"
+        },
+        "description": "Entire line background color for favorite tasks `{f}`."
+      },
+      {
+        "id": "notecraft.commentForeground",
+        "defaults": {
+          "light": "#b4b4b4",
+          "dark": "#b4b4b4",
+          "highContrast": "#b4b4b4"
+        },
+        "description": "Color of comments `# Comment`"
+      },
+      {
+        "id": "notecraft.priorityAForeground",
+        "defaults": {
+          "light": "#ec4f47",
+          "dark": "#ec4f47",
+          "highContrast": "#ec4f47"
+        },
+        "description": "`(A)`"
+      },
+      {
+        "id": "notecraft.priorityBForeground",
+        "defaults": {
+          "light": "#fd9f9a",
+          "dark": "#fd9f9a",
+          "highContrast": "#fd9f9a"
+        },
+        "description": "`(B)`"
+      },
+      {
+        "id": "notecraft.priorityCForeground",
+        "defaults": {
+          "light": "#ffb648",
+          "dark": "#ffb039",
+          "highContrast": "#ffb648"
+        },
+        "description": "`(C)`"
+      },
+      {
+        "id": "notecraft.priorityDForeground",
+        "defaults": {
+          "light": "#f1d900",
+          "dark": "#e2cb00",
+          "highContrast": "#f1d900"
+        },
+        "description": "`(D)`"
+      },
+      {
+        "id": "notecraft.priorityEForeground",
+        "defaults": {
+          "light": "#ace000",
+          "dark": "#97c500",
+          "highContrast": "#ace000"
+        },
+        "description": "`(E)`"
+      },
+      {
+        "id": "notecraft.priorityFForeground",
+        "defaults": {
+          "light": "#00cfad",
+          "dark": "#00cfad",
+          "highContrast": "#00cfad"
+        },
+        "description": "`(F)`"
+      },
+      {
+        "id": "notecraft.tagForeground",
+        "defaults": {
+          "light": "#029cdf",
+          "dark": "#1abaff",
+          "highContrast": "#1abaff"
+        },
+        "description": "Tag color `#Tag`"
+      },
+      {
+        "id": "notecraft.contextForeground",
+        "defaults": {
+          "light": "#7284eb",
+          "dark": "#7284eb",
+          "highContrast": "#7284eb"
+        },
+        "description": "Context color `@Context`"
+      },
+      {
+        "id": "notecraft.specialTagForeground",
+        "defaults": {
+          "light": "#7e8081",
+          "dark": "#c3ccfc",
+          "highContrast": "#c3ccfc"
+        },
+        "description": "Color of special tags `{h}`"
+      },
+      {
+        "id": "notecraft.projectForeground",
+        "defaults": {
+          "light": "#36cc9a",
+          "dark": "#36cc9a",
+          "highContrast": "#36cc9a"
+        },
+        "description": "Project color `+Project`"
+      },
+      {
+        "id": "notecraft.notDueForeground",
+        "defaults": {
+          "light": "#7e8081",
+          "dark": "#c3ccfc",
+          "highContrast": "#c3ccfc"
+        },
+        "description": "Not due"
+      },
+      {
+        "id": "notecraft.dueForeground",
+        "defaults": {
+          "light": "#01c208",
+          "dark": "#35c03a",
+          "highContrast": "#37df3d"
+        },
+        "description": "Due"
+      },
+      {
+        "id": "notecraft.overdueForeground",
+        "defaults": {
+          "light": "#d44343",
+          "dark": "#d44343",
+          "highContrast": "#f64f4f"
+        },
+        "description": "Overdue"
+      },
+      {
+        "id": "notecraft.invalidDueDateForeground",
+        "defaults": {
+          "light": "#ffffff",
+          "dark": "#ffffff",
+          "highContrast": "#ffffff"
+        },
+        "description": "Due date that is either has an invalid format `2020-05` or an invalid date `2020-12-35`"
+      },
+      {
+        "id": "notecraft.invalidDueDateBackground",
+        "defaults": {
+          "light": "#7284eb",
+          "dark": "#7284eb",
+          "highContrast": "#7284eb"
+        },
+        "description": "Due date that is either has an invalid format `2020-05` or an invalid date `2020-12-35`"
+      },
+      {
+        "id": "notecraft.nestedTasksCountBackground",
+        "defaults": {
+          "light": "#f7f3c099",
+          "dark": "#e0d971",
+          "highContrast": "#e0d971"
+        },
+        "description": "Nested tasks counter editor decoration background."
+      },
+      {
+        "id": "notecraft.nestedTasksCountForeground",
+        "defaults": {
+          "light": "#000000",
+          "dark": "#000000",
+          "highContrast": "#000000"
+        },
+        "description": "Nested tasks counter editor decoration foreground."
+      },
+      {
+        "id": "notecraft.nestedTasksCountBorder",
+        "defaults": {
+          "light": "#dfd987bd",
+          "dark": "#fff0",
+          "highContrast": "#fff0"
+        },
+        "description": "Nested tasks counter editor decoration border."
+      },
+      {
+        "id": "notecraft.treeViewCompletedTaskIcon",
+        "defaults": {
+          "light": "#7cc54b",
+          "dark": "#7cc54b",
+          "highContrast": "#7cc54b"
+        },
+        "description": "Color of completed task icon in Tree View."
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "notecraft.applyFilterToTreeView",
+          "when": "view == notecraft.tasks && !notecraft:filterActive",
+          "group": "navigation"
+        },
+        {
+          "command": "notecraft.clearTreeViewFilter",
+          "when": "view == notecraft.tasks && notecraft:filterActive",
+          "group": "navigation"
+        },
+        {
+          "command": "notecraft.addTaskToActiveFile",
+          "when": "view =~ /notecraft.(tasks)/",
+          "group": "navigation"
+        },
+        {
+          "command": "notecraft.addTaskToActiveFileWebview",
+          "when": "view =~ /notecraft.(webviewTasks)/",
+          "group": "navigation"
+        },
+        {
+          "command": "notecraft.openDefaultFile",
+          "when": "view == notecraft.tasks",
+          "group": "navigation"
+        },
+        {
+          "command": "notecraft.showWebviewSettings",
+          "when": "view == notecraft.webviewTasks",
+          "group": "navigation@8"
+        },
+        {
+          "command": "notecraft.webview.pickSort",
+          "when": "view == notecraft.webviewTasks",
+          "group": "navigation@7"
+        },
+        {
+          "command": "notecraft.webview.toggleShowRecurringUpcoming",
+          "when": "view == notecraft.webviewTasks",
+          "group": "navigation@6"
+        },
+        {
+          "command": "notecraft.collapseAllNestedTasks",
+          "alt": "notecraft.expandAllTasks",
+          "when": "view == notecraft.webviewTasks",
+          "group": "navigation@9"
+        },
+        {
+          "command": "notecraft.toggleTagsTreeViewSorting",
+          "when": "view == notecraft.tags",
+          "group": "navigation@9"
+        },
+        {
+          "command": "notecraft.toggleProjectsTreeViewSorting",
+          "when": "view == notecraft.projects",
+          "group": "navigation@9"
+        },
+        {
+          "command": "notecraft.toggleContextsTreeViewSorting",
+          "when": "view == notecraft.contexts",
+          "group": "navigation@9"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "notecraft.startTask",
+          "when": "view =~ /notecraft.(tasks|due|projects|tags|contexts|generic1|generic2|generic3)/ && viewItem =~ /(task|taskWithLink)/",
+          "group": "1_0"
+        },
+        {
+          "command": "notecraft.toggleFavorite",
+          "when": "view =~ /notecraft.(tasks|due|projects|tags|contexts|generic1|generic2|generic3)/ && viewItem =~ /(task|taskWithLink)/",
+          "group": "2_0"
+        },
+        {
+          "command": "notecraft.followLink",
+          "when": "view =~ /notecraft.(tasks|due|projects|tags|contexts|generic1|generic2|generic3)/ && viewItem == taskWithLink",
+          "group": "3_0"
+        },
+        {
+          "command": "notecraft.hideTask",
+          "when": "view =~ /notecraft.(tasks|due|projects|tags|contexts|generic1|generic2|generic3)/ && viewItem =~ /(task|taskWithLink)/",
+          "group": "4_0"
+        },
+        {
+          "command": "notecraft.deleteTask",
+          "when": "view =~ /notecraft.(tasks|due|projects|tags|contexts|generic1|generic2|generic3)/ && viewItem =~ /(task|taskWithLink)/",
+          "group": "7_0"
+        },
+        {
+          "command": "notecraft.toggleDone",
+          "when": "view =~ /notecraft.(tasks|due|projects|tags|contexts|generic1|generic2|generic3)/ && viewItem =~ /(task|taskWithLink)/ && !config.notecraft.treeView.useVscodeCheckboxApi",
+          "group": "inline"
+        }
+      ],
+      "notecraft.contextMenu": [
+        {
+          "submenu": "notecraft.sortMenu",
+          "group": "0@0"
+        },
+        {
+          "command": "notecraft.setDueDate",
+          "group": "1@0"
+        },
+        {
+          "command": "notecraft.startTask",
+          "group": "2@0"
+        },
+        {
+          "command": "notecraft.incrementPriority",
+          "group": "3@0"
+        },
+        {
+          "command": "notecraft.decrementPriority",
+          "group": "3@1"
+        }
+      ],
+      "notecraft.sortMenu": [
+        {
+          "command": "notecraft.sortByDefault",
+          "group": "0@0"
+        },
+        {
+          "command": "notecraft.sortByPriority",
+          "group": "0@1"
+        },
+        {
+          "command": "notecraft.sortByProject",
+          "group": "0@2"
+        },
+        {
+          "command": "notecraft.sortByTag",
+          "group": "0@3"
+        },
+        {
+          "command": "notecraft.sortByContext",
+          "group": "0@4"
+        },
+        {
+          "command": "notecraft.sortByDueDate",
+          "group": "0@5"
+        },
+        {
+          "command": "notecraft.sortByCompletionDate",
+          "group": "0@6"
+        },
+        {
+          "command": "notecraft.sortByCreationDate",
+          "group": "0@7"
+        }
+      ],
+      "editor/context": [
+        {
+          "submenu": "notecraft.contextMenu",
+          "group": "navigation",
+          "when": "notecraft:isActive"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "notecraft.followLink",
+          "when": "false"
+        },
+        {
+          "command": "notecraft.hideTask",
+          "when": "false"
+        },
+        {
+          "command": "notecraft.deleteTask",
+          "when": "false"
+        },
+        {
+          "command": "notecraft.toggleTagsTreeViewSorting",
+          "when": "false"
+        },
+        {
+          "command": "notecraft.toggleProjectsTreeViewSorting",
+          "when": "false"
+        },
+        {
+          "command": "notecraft.toggleContextsTreeViewSorting",
+          "when": "false"
+        },
+        {
+          "command": "notecraft.focusTasksWebviewAndInput",
+          "when": "false"
+        },
+        {
+          "command": "notecraft.addTaskToActiveFileWebview",
+          "when": "false"
+        },
+        {
+          "command": "notecraft.setDueDate",
+          "when": "notecraft:isActive"
+        },
+        {
+          "command": "notecraft.setDate",
+          "when": "notecraft:isActive"
+        },
+        {
+          "command": "notecraft.toggleDone",
+          "when": "notecraft:isActive"
+        },
+        {
+          "command": "notecraft.sortByDefault",
+          "when": "notecraft:isActive"
+        },
+        {
+          "command": "notecraft.sortByPriority",
+          "when": "notecraft:isActive"
+        },
+        {
+          "command": "notecraft.sortByProject",
+          "when": "notecraft:isActive"
+        },
+        {
+          "command": "notecraft.sortByTag",
+          "when": "notecraft:isActive"
+        },
+        {
+          "command": "notecraft.sortByContext",
+          "when": "notecraft:isActive"
+        },
+        {
+          "command": "notecraft.sortByCreationDate",
+          "when": "notecraft:isActive"
+        },
+        {
+          "command": "notecraft.sortByDueDate",
+          "when": "notecraft:isActive"
+        },
+        {
+          "command": "notecraft.sortByCompletionDate",
+          "when": "notecraft:isActive"
+        },
+        {
+          "command": "notecraft.archiveCompletedTasks",
+          "when": "notecraft:isActive"
+        },
+        {
+          "command": "notecraft.moveToSomeday",
+          "when": "notecraft:isActive"
+        },
+        {
+          "command": "notecraft.createSimilarTask",
+          "description": "Create similar task (same tags, projects, contexts).",
+          "when": "notecraft:isActive"
+        },
+        {
+          "command": "notecraft.startTask",
+          "when": "notecraft:isActive"
+        },
+        {
+          "command": "notecraft.toggleComment",
+          "when": "notecraft:isActive"
+        },
+        {
+          "command": "notecraft.dev.setLastVisit",
+          "when": "notecraft:isDev"
+        },
+        {
+          "command": "notecraft.dev.clearGlobalState",
+          "when": "notecraft:isDev"
+        },
+        {
+          "command": "notecraft.dev.showGlobalState",
+          "when": "notecraft:isDev"
+        },
+        {
+          "command": "notecraft.dev.removeAllOverdue",
+          "when": "notecraft:isDev"
+        }
+      ]
+    },
+    "submenus": [
+      {
+        "id": "notecraft.contextMenu",
+        "label": "Todo MD"
+      },
+      {
+        "id": "notecraft.sortMenu",
+        "label": "Sort"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "notecraft",
+          "icon": "$(checklist)",
+          "title": "notecraft"
+        }
+      ]
+    },
+    "views": {
+      "notecraft": [
+        {
+          "type": "webview",
+          "id": "notecraft.webviewTasks",
+          "contextualTitle": "Tasks",
+          "name": "Webview",
+          "icon": "$(check)"
+        },
+        {
+          "id": "notecraft.tasks",
+          "name": "Tasks"
+        },
+        {
+          "id": "notecraft.tags",
+          "name": "Tags",
+          "visibility": "collapsed"
+        },
+        {
+          "id": "notecraft.projects",
+          "name": "Projects",
+          "visibility": "collapsed"
+        },
+        {
+          "id": "notecraft.contexts",
+          "name": "Contexts",
+          "visibility": "collapsed"
+        },
+        {
+          "id": "notecraft.archived",
+          "name": "Archived",
+          "visibility": "collapsed"
+        },
+        {
+          "id": "notecraft.due",
+          "name": "Due",
+          "visibility": "collapsed"
+        },
+        {
+          "id": "notecraft.generic1",
+          "name": "Generic1",
+          "when": "notecraft:generic1FilterExists"
+        },
+        {
+          "id": "notecraft.generic2",
+          "name": "Generic2",
+          "when": "notecraft:generic2FilterExists"
+        },
+        {
+          "id": "notecraft.generic3",
+          "name": "Generic3",
+          "when": "notecraft:generic3FilterExists"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "notecraft.archived",
+        "when": "notecraft:archivedFileNotSpecified",
+        "contents": "Archived file path not set.\n\n[Pick file to use as archived file](command:notecraft.specifyDefaultArchiveFile)"
+      }
+    ]
+  },
   "scripts": {
     "watch": "concurrently -r \"npm:watch:*\"",
     "vscode:prepublish": "npm run scss & npm run webview & webpack --mode production --color",
@@ -1977,10 +1977,17 @@
   "dependencies": {
     "@types/node": "^18.19.15",
     "@types/vscode": "^1.84.0",
+    "@vue/runtime-core": "^3.5.13",
     "date-fns": "^2.30.0",
     "dayjs": "^1.11.13",
     "lodash": "^4.17.21",
-    "vue": "^3.4.18"
+    "pinia": "^2.1.7",
+    "vue": "^3.4.18",
+    "@kyvg/vue3-notification": "^3.1.4",
+    "fuzzysort": "^2.0.4",
+    "marked": "^12.0.0",
+    "mitt": "^3.0.1",
+    "vue-final-modal": "^3.4.11"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.23.10",
@@ -2011,6 +2018,7 @@
     "vscode-test": "^1.6.1",
     "vue-loader": "^17.4.2",
     "vue-style-loader": "^4.1.3",
+    "vue-template-compiler": "^2.7.16",
     "webpack": "^5.90.1",
     "webpack-cli": "^5.1.4"
   }

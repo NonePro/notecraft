@@ -21,7 +21,7 @@ export const enum Constants {
 
 	WorkspaceFolderVariable = '${workspaceFolder}',
 
-	ExtensionMenuPrefix = 'Todo MD:',
+	ExtensionMenuPrefix = 'Note Craft:',
 
 	NestingSymbol = '◦',
 

@@ -248,7 +248,7 @@ export class TasksWebviewViewProvider implements WebviewViewProvider {
 				<link href="${codiconCSSUri}" rel="stylesheet" />
 				<link href="${CSSUri}" rel="stylesheet">
 				${userCSSLink}
-				<title>Tasks</title>
+				<title>NoteCraft Tasks</title>
 			</head>
 			<body>
 				<div id="app"></div>
