@@ -2,7 +2,7 @@ import { Disposable, languages, Position, Range, WorkspaceEdit } from 'vscode';
 import { ParsedWordContext, ParsedWordProject, ParsedWordTags, parseWord } from '../parse';
 import { forEachTask } from '../utils/taskUtils';
 import { getWordRangeAtPosition } from '../utils/vscodeUtils';
-import { getTodoMdFileDocumentSelector } from './languageFeatures';
+import { getNotecraftFileDocumentSelector } from './languageFeatures';
 
 let renameProviderDisposable: Disposable | undefined;
 
@@ -14,7 +14,7 @@ export function updateRenameProvider() {
 	disposeRenameProvider();
 
 	renameProviderDisposable = languages.registerRenameProvider(
-		getTodoMdFileDocumentSelector(),
+		getNotecraftFileDocumentSelector(),
 		{
 			provideRenameEdits(document, position, newName) {
 				const range = getWordRangeAtPosition(document, position);

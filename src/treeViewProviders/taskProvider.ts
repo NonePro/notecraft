@@ -35,7 +35,7 @@ export class TaskTreeItem extends TreeItem {
 		} else {
 			// Use icon to show completed state
 			if (task.done) {
-				this.iconPath = new ThemeIcon('pass', new ThemeColor('todomd.treeViewCompletedTaskIcon'));
+				this.iconPath = new ThemeIcon('pass', new ThemeColor('notecraft.treeViewCompletedTaskIcon'));
 			}
 		}
 

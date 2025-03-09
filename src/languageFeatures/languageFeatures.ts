@@ -10,7 +10,7 @@ import { updateRenameProvider } from './renameProvider';
  * Return selector targeting files this extension activates on
  * (for language features).
  */
-export function getTodoMdFileDocumentSelector(): DocumentSelector {
+export function getNotecraftFileDocumentSelector(): DocumentSelector {
 	return {
 		scheme: 'file',
 		pattern: $config.activatePattern,

@@ -1,7 +1,7 @@
 import { Disposable, languages, Location, Range } from 'vscode';
 import { parseWord } from '../parse';
 import { getWordRangeAtPosition } from '../utils/vscodeUtils';
-import { getTodoMdFileDocumentSelector } from './languageFeatures';
+import { getNotecraftFileDocumentSelector } from './languageFeatures';
 import { getAllContextRangesInDocument, getAllProjectRangesInDocument, getAllTagRangesInDocument } from './renameProvider';
 
 let referenceProviderDisposable: Disposable | undefined;
@@ -14,7 +14,7 @@ export function updateReferenceProvider() {
 	disposeReferenceProvider();
 
 	referenceProviderDisposable = languages.registerReferenceProvider(
-		getTodoMdFileDocumentSelector(),
+		getNotecraftFileDocumentSelector(),
 		{
 			provideReferences(document, position, context) {
 				const range = getWordRangeAtPosition(document, position);

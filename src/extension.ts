@@ -267,7 +267,39 @@ export async function updateLastVisitGlobalState(stringUri: string, date: Date) 
  * Update global variable `$config` and replace variables when needed.
  */
 function assignConfig(): void {
-	$config = JSON.parse(JSON.stringify(workspace.getConfiguration().get(Constants.ExtensionSettingsPrefix) as ExtensionConfig));
+	const defaultConfig = workspace.getConfiguration(Constants.ExtensionSettingsPrefix);
+	$config = {
+		isDev: defaultConfig.get('isDev') ?? false,
+		addCreationDate: defaultConfig.get('addCreationDate') ?? false,
+		completionDateIncludeDate: defaultConfig.get('completionDateIncludeDate') ?? true,
+		completionDateIncludeTime: defaultConfig.get('completionDateIncludeTime') ?? false,
+		decorations: {
+			completedTask: defaultConfig.get('decorations.completedTask') ?? {},
+			favorite: defaultConfig.get('decorations.favorite') ?? {},
+			comment: defaultConfig.get('decorations.comment') ?? {},
+			priorityA: defaultConfig.get('decorations.priorityA') ?? {},
+			priorityB: defaultConfig.get('decorations.priorityB') ?? {},
+			priorityC: defaultConfig.get('decorations.priorityC') ?? {},
+			priorityD: defaultConfig.get('decorations.priorityD') ?? {},
+			priorityE: defaultConfig.get('decorations.priorityE') ?? {},
+			priorityF: defaultConfig.get('decorations.priorityF') ?? {},
+			tag: defaultConfig.get('decorations.tag') ?? {},
+			context: defaultConfig.get('decorations.context') ?? {},
+			project: defaultConfig.get('decorations.project') ?? {},
+			notDue: defaultConfig.get('decorations.notDue') ?? {},
+			due: defaultConfig.get('decorations.due') ?? {},
+			overdue: defaultConfig.get('decorations.overdue') ?? {},
+			invalidDue: defaultConfig.get('decorations.invalidDue') ?? {},
+		},
+		progressStatusBarItem: {
+			alignment: defaultConfig.get('progressStatusBarItem.alignment') ?? 'left',
+			priority: defaultConfig.get('progressStatusBarItem.priority') ?? 100,
+		},
+		mainStatusBarItem: {
+			alignment: defaultConfig.get('mainStatusBarItem.alignment') ?? 'right',
+			priority: defaultConfig.get('mainStatusBarItem.priority') ?? 200,
+		},
+	} as ExtensionConfig;
 
 	$state.defaultFilePerWorkspace = false;
 	$state.defaultFileDoesntExist = false;
@@ -287,7 +319,7 @@ function assignConfig(): void {
 
 				if (!fs.existsSync($config.defaultFile)) {
 					$state.defaultFileDoesntExist = true;
-					console.warn(`${$config.defaultFile} "todomd.defaultFile" doesn't exist.`);
+					console.warn(`${$config.defaultFile} "notecraft.defaultFile" doesn't exist.`);
 					$config.defaultFile = '';
 				}
 			}

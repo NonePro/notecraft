@@ -9,7 +9,7 @@ import { helpGetColor } from '../utils/colors';
 import { getTaskAtLineExtension } from '../utils/taskUtils';
 import { getWordRangeAtPosition } from '../utils/vscodeUtils';
 import { getTasksHoverMd } from './getTaskHover';
-import { getTodoMdFileDocumentSelector } from './languageFeatures';
+import { getNotecraftFileDocumentSelector } from './languageFeatures';
 
 let hoverDisposable: Disposable | undefined;
 
@@ -21,7 +21,7 @@ export function updateHover() {
 	disposeHover();
 
 	hoverDisposable = languages.registerHoverProvider(
-		getTodoMdFileDocumentSelector(),
+		getNotecraftFileDocumentSelector(),
 		{
 			provideHover(document, position, token) {
 				const task = getTaskAtLineExtension(position.line);

@@ -1,7 +1,7 @@
 import { Disposable, DocumentHighlight, DocumentHighlightKind, languages, Range } from 'vscode';
 import { parseWord } from '../parse';
 import { getWordRangeAtPosition } from '../utils/vscodeUtils';
-import { getTodoMdFileDocumentSelector } from './languageFeatures';
+import { getNotecraftFileDocumentSelector } from './languageFeatures';
 import { getAllContextRangesInDocument, getAllProjectRangesInDocument, getAllTagRangesInDocument } from './renameProvider';
 
 let documentHighlightsDisposable: Disposable | undefined;
@@ -14,7 +14,7 @@ export function updateDocumentHighlights() {
 	disposeDocumentHighlights();
 
 	documentHighlightsDisposable = languages.registerDocumentHighlightProvider(
-		getTodoMdFileDocumentSelector(),
+		getNotecraftFileDocumentSelector(),
 		{
 			provideDocumentHighlights(document, position) {
 				const wordRange = getWordRangeAtPosition(document, position);

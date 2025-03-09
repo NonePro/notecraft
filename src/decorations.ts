@@ -84,78 +84,78 @@ export function updateEditorDecorationStyle() {
 		light: {
 			textDecoration: $config.completedStrikeThrough ? 'line-through rgba(0, 0, 0, 0.25)' : undefined,
 		},
-		...$config.decorations.completedTask,
+		...($config.decorations.completedTask || {}),
 	});
 	favoriteTaskDecorationType = window.createTextEditorDecorationType({
 		isWholeLine: true,
 		backgroundColor: new ThemeColor('notecraft.favoriteTaskBackground'),
-		...$config.decorations.favorite,
+		...($config.decorations.favorite || {}),
 	});
 	commentDecorationType = window.createTextEditorDecorationType({
 		color: new ThemeColor('notecraft.commentForeground'),
 		isWholeLine: true,
 		fontWeight: 'normal',
-		...$config.decorations.comment,
+		...($config.decorations.comment || {}),
 	});
 	priorityADecorationType = window.createTextEditorDecorationType({
 		color: new ThemeColor('notecraft.priorityAForeground'),
 		fontWeight: 'bold',
-		...$config.decorations.priorityA,
+		...($config.decorations.priorityA || {}),
 	});
 	priorityBDecorationType = window.createTextEditorDecorationType({
 		color: new ThemeColor('notecraft.priorityBForeground'),
 		fontWeight: 'bold',
-		...$config.decorations.priorityB,
+		...($config.decorations.priorityB || {}),
 	});
 	priorityCDecorationType = window.createTextEditorDecorationType({
 		color: new ThemeColor('notecraft.priorityCForeground'),
 		fontWeight: 'bold',
-		...$config.decorations.priorityC,
+		...($config.decorations.priorityC || {}),
 	});
 	priorityDDecorationType = window.createTextEditorDecorationType({
 		color: new ThemeColor('notecraft.priorityDForeground'),
 		fontWeight: 'bold',
-		...$config.decorations.priorityD,
+		...($config.decorations.priorityD || {}),
 	});
 	priorityEDecorationType = window.createTextEditorDecorationType({
 		color: new ThemeColor('notecraft.priorityEForeground'),
 		fontWeight: 'bold',
-		...$config.decorations.priorityE,
+		...($config.decorations.priorityE || {}),
 	});
 	priorityFDecorationType = window.createTextEditorDecorationType({
 		color: new ThemeColor('notecraft.priorityFForeground'),
 		fontWeight: 'bold',
-		...$config.decorations.priorityF,
+		...($config.decorations.priorityF || {}),
 	});
 	projectDecorationType = window.createTextEditorDecorationType({
 		color: new ThemeColor('notecraft.projectForeground'),
 		...getBadgeDecorationStyle(),
-		...$config.decorations.project,
+		...($config.decorations.project || {}),
 	});
 	tagsDecorationType = window.createTextEditorDecorationType({
 		color: new ThemeColor('notecraft.tagForeground'),
 		...getBadgeDecorationStyle(),
-		...$config.decorations.tag,
+		...($config.decorations.tag || {}),
 	});
 	contextDecorationType = window.createTextEditorDecorationType({
 		color: new ThemeColor('notecraft.contextForeground'),
 		...getBadgeDecorationStyle(),
-		...$config.decorations.context,
+		...($config.decorations.context || {}),
 	});
 	tagWithDelimiterDecorationType = window.createTextEditorDecorationType({
-		color: new ThemeColor('todomd.tagForeground'),
-		...$config.decorations.tag,
+		color: new ThemeColor('notecraft.tagForeground'),
+		...($config.decorations.tag || {}),
 	});
 	specialTagDecorationType = window.createTextEditorDecorationType({
-		color: new ThemeColor('todomd.specialTagForeground'),
+		color: new ThemeColor('notecraft.specialTagForeground'),
 	});
 	notDueDecorationType = window.createTextEditorDecorationType({
-		color: new ThemeColor('todomd.notDueForeground'),
-		...$config.decorations.notDue,
+		color: new ThemeColor('notecraft.notDueForeground'),
+		...($config.decorations.notDue || {}),
 	});
 	dueDecorationType = window.createTextEditorDecorationType({
-		color: new ThemeColor('todomd.dueForeground'),
-		...$config.decorations.due,
+		color: new ThemeColor('notecraft.dueForeground'),
+		...($config.decorations.due || {}),
 	});
 	const enum DueDecorations {
 		Padding = '0 0.5ch',
@@ -163,33 +163,33 @@ export function updateEditorDecorationStyle() {
 		Border = '1px dashed',
 	}
 	overdueDecorationType = window.createTextEditorDecorationType({
-		color: new ThemeColor('todomd.overdueForeground'),
+		color: new ThemeColor('notecraft.overdueForeground'),
 		after: {
-			color: new ThemeColor('todomd.overdueForeground'),
+			color: new ThemeColor('notecraft.overdueForeground'),
 			border: DueDecorations.Border,
 			textDecoration: `;margin-left:${DueDecorations.Margin};text-align:center;padding:${DueDecorations.Padding};`,
 		},
-		...$config.decorations.overdue,
+		...($config.decorations.overdue || {}),
 	});
 	invalidDueDateDecorationType = window.createTextEditorDecorationType({
-		color: new ThemeColor('todomd.invalidDueDateForeground'),
-		backgroundColor: new ThemeColor('todomd.invalidDueDateBackground'),
-		...$config.decorations.invalidDue,
+		color: new ThemeColor('notecraft.invalidDueDateForeground'),
+		backgroundColor: new ThemeColor('notecraft.invalidDueDateBackground'),
+		...($config.decorations.invalidDue || {}),
 	});
 	closestDueDateDecorationType = window.createTextEditorDecorationType({
 		after: {
 			border: DueDecorations.Border,
-			color: new ThemeColor('todomd.specialTagForeground'),
+			color: new ThemeColor('notecraft.specialTagForeground'),
 			textDecoration: `;margin-left:${DueDecorations.Margin};text-align:center;padding:${DueDecorations.Padding};`,
 		},
 	});
 	nestedTasksCountDecorationType = window.createTextEditorDecorationType({
 		isWholeLine: true,
 		after: {
-			backgroundColor: new ThemeColor('todomd.nestedTasksCountBackground'),
-			color: new ThemeColor('todomd.nestedTasksCountForeground'),
+			backgroundColor: new ThemeColor('notecraft.nestedTasksCountBackground'),
+			color: new ThemeColor('notecraft.nestedTasksCountForeground'),
 			border: '1px solid',
-			borderColor: new ThemeColor('todomd.nestedTasksCountBorder'),
+			borderColor: new ThemeColor('notecraft.nestedTasksCountBorder'),
 			margin: `0 0 0 ${DueDecorations.Margin}`,
 			textDecoration: `;text-align:center;padding:${DueDecorations.Padding};position:relative;`,
 		},

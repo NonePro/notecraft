@@ -7,7 +7,7 @@ import { getDateInISOFormat, weekdayNamesLong } from '../time/timeUtils';
 import { helpCreateSpecialTag, specialTagDescription, SpecialTagName } from '../utils/extensionUtils';
 import { unique } from '../utils/utils';
 import { getWordAtPosition, getWordRangeAtPosition } from '../utils/vscodeUtils';
-import { getTodoMdFileDocumentSelector } from './languageFeatures';
+import { getNotecraftFileDocumentSelector } from './languageFeatures';
 
 let tagAutocompleteDisposable: Disposable | undefined;
 let projectAutocompleteDisposable: Disposable | undefined;
@@ -32,7 +32,7 @@ export function updateCompletions() {
 	disposeCompletionProviders();
 
 	tagAutocompleteDisposable = languages.registerCompletionItemProvider(
-		getTodoMdFileDocumentSelector(),
+		getNotecraftFileDocumentSelector(),
 		{
 			provideCompletionItems(document: TextDocument, position: Position) {
 				const wordAtCursor = getWordAtPosition(document, position);
@@ -56,7 +56,7 @@ export function updateCompletions() {
 		'#',
 	);
 	projectAutocompleteDisposable = languages.registerCompletionItemProvider(
-		getTodoMdFileDocumentSelector(),
+		getNotecraftFileDocumentSelector(),
 		{
 			provideCompletionItems(document: TextDocument, position: Position) {
 				const wordAtCursor = getWordAtPosition(document, position);
@@ -80,7 +80,7 @@ export function updateCompletions() {
 		'+',
 	);
 	contextAutocompleteDisposable = languages.registerCompletionItemProvider(
-		getTodoMdFileDocumentSelector(),
+		getNotecraftFileDocumentSelector(),
 		{
 			provideCompletionItems(document: TextDocument, position: Position) {
 				const wordAtCursor = getWordAtPosition(document, position);
@@ -104,7 +104,7 @@ export function updateCompletions() {
 		'@',
 	);
 	generalAutocompleteDisposable = languages.registerCompletionItemProvider(
-		getTodoMdFileDocumentSelector(),
+		getNotecraftFileDocumentSelector(),
 		{
 			provideCompletionItems(document: TextDocument, position: Position) {
 				const today = new CompletionItem('TODAY', CompletionItemKind.Constant);
@@ -145,7 +145,7 @@ export function updateCompletions() {
 		'',
 	);
 	specialTagsAutocompleteDisposable = languages.registerCompletionItemProvider(
-		getTodoMdFileDocumentSelector(),
+		getNotecraftFileDocumentSelector(),
 		{
 			provideCompletionItems(document: TextDocument, position: Position) {
 				const charBeforeCursor = document.getText(new Range(position.line, position.character === 0 ? 0 : position.character - 1, position.line, position.character));
@@ -179,7 +179,7 @@ export function updateCompletions() {
 		'{',
 	);
 	setDueDateAutocompleteDisposable = languages.registerCompletionItemProvider(
-		getTodoMdFileDocumentSelector(),
+		getNotecraftFileDocumentSelector(),
 		{
 			provideCompletionItems(document: TextDocument, position: Position) {
 				const wordRange = getWordRangeAtPosition(document, position);

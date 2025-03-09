@@ -34,6 +34,47 @@
       "type": "object",
       "title": "NoteCraft",
       "properties": {
+        "notecraft.defaultFile": {
+          "type": "string",
+          "default": "",
+          "description": "Default file path for new tasks (supports ${workspaceFolder} variable)"
+        },
+        "notecraft.defaultArchiveFile": {
+          "type": "string",
+          "default": "",
+          "description": "Archive file path for completed tasks"
+        },
+        "notecraft.addCreationDate": {
+          "type": "boolean",
+          "default": false,
+          "description": "Add creation date automatically when creating new tasks"
+        },
+        "notecraft.decorations.completedTask": {
+          "type": "object",
+          "default": {},
+          "description": "Decoration options for completed tasks"
+        },
+        "notecraft.decorations.priorityA": {
+          "type": "object",
+          "default": {},
+          "description": "Decoration options for priority A tasks"
+        },
+        "notecraft.decorations.priorityB": {
+          "type": "object",
+          "default": {},
+          "description": "Decoration options for priority B tasks"
+        },
+        "notecraft.mainStatusBarItem.alignment": {
+          "type": "string",
+          "enum": ["left", "right"],
+          "default": "right",
+          "description": "Alignment position for main status bar item"
+        },
+        "notecraft.mainStatusBarItem.priority": {
+          "type": "number",
+          "default": 200,
+          "description": "Display priority for main status bar item"
+        },
         "notecraft.workflow.states": {
           "type": "array",
           "default": [
@@ -43,18 +84,8 @@
             "done"
           ],
           "description": "Custom workflow states for tasks"
-        },
-        "notecraft.workflow.timeTracking": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable time tracking for tasks"
-        },
-        "notecraft.calendar.enabled": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable calendar view for tasks and notes"
         }
-      }
+	  }
     }
   },
   "scripts": {
