@@ -92,17 +92,27 @@ export function inputOffset(text: string): string {
  * Get word range, but using regexp defining word as a thing surrounded by spaces
  */
 export function getWordRangeAtPosition(document: TextDocument, position: Position) {
-	return document.getWordRangeAtPosition(position, /\S+/);
+	try {
+		return document.getWordRangeAtPosition(position, /\S+/);
+	} catch (error) {
+		console.error('Error getting word range:', error);
+		return undefined;
+	}
 }
 /**
  * Get a word at position (word delimiter is a whitespace)
  */
 export function getWordAtPosition(document: TextDocument, position: Position) {
-	const wordRange = getWordRangeAtPosition(document, position);
-	if (wordRange) {
-		return document.getText(wordRange);
+	try {
+		const wordRange = getWordRangeAtPosition(document, position);
+		if (wordRange && wordRange.start) {
+			return document.getText(wordRange);
+		}
+		return undefined;
+	} catch (error) {
+		console.error('Error getting word at position:', error);
+		return undefined;
 	}
-	return undefined;
 }
 /**
  * Updates global setting with new value.

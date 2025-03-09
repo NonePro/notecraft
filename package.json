@@ -30,10 +30,163 @@
   ],
   "main": "./dist/extension",
   "contributes": {
+    "commands": [
+      {
+        "command": "notecraft.toggleDone",
+        "title": "Toggle completion",
+        "category": "Note Craft",
+        "icon": "$(check)"
+      },
+      {
+        "command": "notecraft.hideTask",
+        "title": "Hide the Task",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.deleteTask",
+        "title": "Delete the Task",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.addTaskToDefaultFile",
+        "title": "Add a Task to DEFAULT file",
+        "category": "Note Craft",
+        "icon": "$(add)"
+      },
+      {
+        "command": "notecraft.addTaskToActiveFile",
+        "title": "Add a Task to ACTIVE file",
+        "category": "Note Craft",
+        "icon": "$(add)"
+      },
+      {
+        "command": "notecraft.archiveCompletedTasks",
+        "title": "Move completed tasks to Archive file",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.toggleFavorite",
+        "title": "Toggle Favorite",
+        "category": "Note Craft"
+      },
+      {
+        "command": "notecraft.openDefaultFile",
+        "title": "Open default file",
+        "category": "Note Craft",
+        "icon": "$(go-to-file)"
+      }
+    ],
     "configuration": {
       "type": "object",
       "title": "NoteCraft",
       "properties": {
+        "notecraft.webview.showCompleted": {
+          "type": "boolean",
+          "markdownDescription": "Whether completed tasks are shown or not in the webview.",
+          "default": true
+        },
+        "notecraft.webview.completedStrikeThrough": {
+          "type": "boolean",
+          "markdownDescription": "Whether completed tasks should have a line drawn on them in the webview.",
+          "default": false
+        },
+        "notecraft.webview.showRecurringCompleted": {
+          "type": "boolean",
+          "markdownDescription": "Whether recurring completed tasks are shown or not in the webview.",
+          "default": true
+        },
+        "notecraft.webview.showPriority": {
+          "type": "boolean",
+          "markdownDescription": "Controls whether priority is shown in the webview.",
+          "default": true
+        },
+        "notecraft.webview.showCheckbox": {
+          "type": "boolean",
+          "markdownDescription": "Controls whether checkbox is shown in the webview.",
+          "default": true
+        },
+        "notecraft.webview.showNestedTaskCount": {
+          "type": "boolean",
+          "markdownDescription": "Controls whether nested tasks indicator (like '0/10') is shown in the webview.",
+          "default": false
+        },
+        "notecraft.webview.showTaskDetails": {
+          "type": "boolean",
+          "markdownDescription": "When true - show box on the bottom of the webview that shows selected task details.",
+          "default": false
+        },
+        "notecraft.webview.notificationsEnabled": {
+          "type": "boolean",
+          "markdownDescription": "When true - show notification after some actions (like task completion) in a webview.",
+          "default": false
+        },
+        "notecraft.webview.fontSize": {
+          "type": "string",
+          "markdownDescription": "Controls font size in the webview. [CSS Units](https://developer.mozilla.org/en-US/docs/Web/CSS/font-size)",
+          "default": "15px"
+        },
+        "notecraft.webview.fontFamily": {
+          "type": "string",
+          "markdownDescription": "Controls font family in the webview.",
+          "default": "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji'"
+        },
+        "notecraft.webview.lineHeight": {
+          "type": "number",
+          "markdownDescription": "Controls line height in the webview.",
+          "default": 1.4,
+          "minimum": 1,
+          "maximum": 3
+        },
+        "notecraft.webview.padding": {
+          "type": "string",
+          "markdownDescription": "Controls top & bottom padding.",
+          "default": "2px"
+        },
+        "notecraft.webview.indentSize": {
+          "type": "string",
+          "markdownDescription": "Controls visual indent of nested elements in a webview.",
+          "default": "1.8em"
+        },
+        "notecraft.webview.customCheckboxEnabled": {
+          "type": "boolean",
+          "markdownDescription": "Whether checkbox is rendered as native input element or a custom styled element.",
+          "default": true
+        },
+        "notecraft.webview.autoShowSuggest": {
+          "type": "boolean",
+          "markdownDescription": "Show autocomplete when typing. (When disabled suggest can be called by 'Ctrl'+'Space')",
+          "default": true
+        },
+        "notecraft.webview.focusFilterInputOnClick": {
+          "type": "boolean",
+          "markdownDescription": "Focus filter input after clicking(selecting) any task.",
+          "default": true
+        },
+        "notecraft.webview.customCSSPath": {
+          "type": "string",
+          "markdownDescription": "Absolute path to custom CSS for the webview.",
+          "default": ""
+        },
+        "notecraft.webview.tagStyles": {
+          "type": "object",
+          "markdownDescription": "Set different color for any tag in a webview.",
+          "default": {},
+          "patternProperties": {
+            ".+": {
+              "type": "object",
+              "properties": {
+                "color": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "backgroundColor": {
+                  "type": "string",
+                  "format": "color"
+                }
+              }
+            }
+          }
+        },
         "notecraft.defaultFile": {
           "type": "string",
           "default": "",
@@ -42,7 +195,28 @@
         "notecraft.defaultArchiveFile": {
           "type": "string",
           "default": "",
-          "description": "Archive file path for completed tasks"
+          "markdownDescription": "Absolute path to file that all archived tasks will be moved to.\n\n[**Pick archive file**](command:notecraft.specifyDefaultArchiveFile).  Supports using `${workspaceFolder}` variable substitution."
+        },
+        "notecraft.durationIncludeSeconds": {
+          "type": "boolean",
+          "markdownDescription": "When enabled - duration (editor, hover) includes seconds.",
+          "default": false
+        },
+        "notecraft.autoArchiveTasks": {
+          "type": "boolean",
+          "markdownDescription": "When enabled - will move tasks to archive file (on completion).",
+          "default": false
+        },
+        "notecraft.confirmTaskDelete": {
+          "type": "string",
+          "enum": ["always", "never", "hasNestedTasks"],
+          "markdownDescription": "Show confirmation when deleting task from Tree View or Webview.",
+          "default": "always"
+        },
+        "notecraft.activatePattern": {
+          "type": "string",
+          "markdownDescription": "Choose files that extension will operate on. By default activated on 3 files (todo.md, someday.md & todo.archive.md). Uses [Glob](https://code.visualstudio.com/docs/editor/glob-patterns).",
+          "default": "**/{todo,someday,todo.archive}.md"
         },
         "notecraft.addCreationDate": {
           "type": "boolean",
@@ -64,16 +238,68 @@
           "default": {},
           "description": "Decoration options for priority B tasks"
         },
-        "notecraft.mainStatusBarItem.alignment": {
-          "type": "string",
-          "enum": ["left", "right"],
-          "default": "right",
-          "description": "Alignment position for main status bar item"
+        "notecraft.mainStatusBarItem": {
+          "type": "object",
+          "default": {
+            "enabled": true,
+            "hoverEnabled": true,
+            "alignment": "right",
+            "priority": 200,
+            "truncate": 50,
+            "onClick": "revealTask",
+            "targetTasks": "all",
+            "highlightOverdue": "none",
+            "highlightDue": "none"
+          },
+          "description": "Configure appearance/behavior of main status bar item (shows next task to complete)"
         },
-        "notecraft.mainStatusBarItem.priority": {
-          "type": "number",
-          "default": 200,
-          "description": "Display priority for main status bar item"
+        "notecraft.progressStatusBarItem": {
+          "type": "object",
+          "default": {
+            "enabled": true,
+            "alignment": "right",
+            "priority": 100
+          },
+          "description": "Configure appearance/behavior of progress status bar item (shows task completion percentage)"
+        },
+        "notecraft.treeView": {
+          "type": "object",
+          "default": {
+            "showBadge": true,
+            "useVscodeCheckboxApi": true
+          },
+          "properties": {
+            "showBadge": {
+              "type": "boolean",
+              "default": true,
+              "description": "Whether or not to show due tasks counter badge for tree view container"
+            },
+            "useVscodeCheckboxApi": {
+              "type": "boolean",
+              "default": true,
+              "description": "When checked - will use vscode api to show checkboxes"
+            }
+          },
+          "description": "Configure tree view behavior and appearance"
+        },
+        "notecraft.treeViews": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string",
+                "description": "Title of the tree view"
+              },
+              "filter": {
+                "type": "string",
+                "description": "Filter query for the tree view"
+              }
+            },
+            "required": ["title", "filter"]
+          },
+          "description": "Custom tree views with filters"
         },
         "notecraft.workflow.states": {
           "type": "array",

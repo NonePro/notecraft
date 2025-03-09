@@ -100,6 +100,23 @@ export async function activate(context: ExtensionContext) {
 	process.on('unhandledRejection', error => {
 		// Log the error but prevent it from crashing the extension
 		console.error('Unhandled promise rejection:', error);
+		// Add specific handling for ECONNRESET errors
+		if (error instanceof Error && error.message.includes('ECONNRESET')) {
+			console.log('Network connection reset - attempting to recover...');
+			// Implement graceful recovery logic
+			setTimeout(() => {
+				try {
+					// Attempt to reinitialize network-dependent components
+					$state.mainStatusBar = new MainStatusBar();
+					$state.progressStatusBar = new ProgressStatusBar();
+					$state.editorLineHeight = getEditorLineHeight();
+					updateEditorDecorationStyle();
+					updateUserSuggestItems();
+				} catch (recoveryError) {
+					console.error('Failed to recover from connection reset:', recoveryError);
+				}
+			}, 1000);
+		}
 	});
 
 	try {
