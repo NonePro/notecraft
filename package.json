@@ -1972,21 +1972,22 @@
     "watch:extension": "webpack --mode development --watch --stats minimal",
     "scss": "sass --no-source-map --style=compressed media/scss:media",
     "watch:scss": "sass --watch media/scss:media",
+    "webview": "webpack --config media/webpack.config.js --mode production",
     "test": "node ./dist/test/runTest.js"
   },
   "dependencies": {
+    "@kyvg/vue3-notification": "^3.1.4",
     "@types/node": "^18.19.15",
     "@types/vscode": "^1.84.0",
-    "@vue/runtime-core": "^3.5.13",
+    "@vue/runtime-core": "^3.4.18",
     "date-fns": "^2.30.0",
     "dayjs": "^1.11.13",
-    "lodash": "^4.17.21",
-    "pinia": "^2.1.7",
-    "vue": "^3.4.18",
-    "@kyvg/vue3-notification": "^3.1.4",
     "fuzzysort": "^2.0.4",
+    "lodash": "^4.17.21",
     "marked": "^12.0.0",
     "mitt": "^3.0.1",
+    "pinia": "^2.1.7",
+    "vue": "^3.4.18",
     "vue-final-modal": "^3.4.11"
   },
   "devDependencies": {
@@ -2018,8 +2019,6 @@
     "vscode-test": "^1.6.1",
     "vue-loader": "^17.4.2",
     "vue-style-loader": "^4.1.3",
-    "vue-template-compiler": "^2.7.16",
-    "webpack": "^5.90.1",
-    "webpack-cli": "^5.1.4"
+    "webpack-cli": "^6.0.1"
   }
 }

@@ -37,11 +37,11 @@ const sassLoader = {
 module.exports = (env, options) => {
 	/** @type {import('webpack').Configuration}*/
 	const config = {
-		target: 'node',
+		target: 'web',
 
 		entry: './media/index.ts',
 		output: {
-			path: path.resolve(__dirname),
+			path: path.resolve(__dirname, '../dist'),
 			filename: 'webview.js',
 			libraryTarget: 'window',
 			devtoolModuleFilenameTemplate: '../[resource-path]',
@@ -54,7 +54,7 @@ module.exports = (env, options) => {
 			extensions: ['.ts', '.js', '.vue', '.css', '.scss', '.json'],
 			alias: {
 				src: path.resolve('./src'),
-				// vue$: 'vue/dist/vue.esm.js',
+				vue$: 'vue/dist/vue.esm-bundler.js'
 			},
 		},
 		module: {
@@ -72,25 +72,21 @@ module.exports = (env, options) => {
 
 	if (options.mode === 'production') {
 		config.devtool = false;
-		// Prod
-		// @ts-ignore
-		// config.optimization = {
-		// 	minimize: true,
-		// 	minimizer: [
-		// 		// @ts-ignore
-		// 		new TerserPlugin({
-		// 			terserOptions: {
-		// 				ecma: 2020,
-		// 				toplevel: true,
-		// 				// @ts-ignore
-		// 				format: {
-		// 					comments: false,// Opt out of LICENSE.txt creation
-		// 				},
-		// 			},
-		// 			extractComments: false,
-		// 		}),
-		// 	],
-		// }
+		config.optimization = {
+			minimize: true,
+			minimizer: [
+				new TerserPlugin({
+					terserOptions: {
+						ecma: 2020,
+						toplevel: true,
+						format: {
+							comments: false,
+						},
+					},
+					extractComments: false,
+				}),
+			],
+		}
 	} else {
 		// Dev
 	}

@@ -1,10 +1,15 @@
 @startuml VSCode Configuration Loading Mechanism
 
+box "Electron Main Process" #LightBlue
 participant "VS Code Main Process" as Main
 participant "Configuration Service" as Config
 participant "Workspace Service" as Workspace
+end box
+
+box "Node.js Process" #LightGreen
 participant "Extension Host" as ExtHost
 participant "Extension (notecraft)" as Ext
+end box
 
 activate Main
 Main -> Config : Initialize configuration service
@@ -20,9 +25,13 @@ Workspace -> Config : Get workspace folder
 Config -> Config : Load workspace settings.json
 note right: From .vscode/settings.json
 
-Main -> ExtHost : Start extension host
+Main -> Main : Create Node.js process
+Main -> ExtHost : Start extension host process
 activate ExtHost
+Main <-> ExtHost : IPC communication channel
 
+ExtHost -> ExtHost : Scan for extensions
+ExtHost -> ExtHost : Load extension manifests
 ExtHost -> Ext : activate(context)
 activate Ext
 
